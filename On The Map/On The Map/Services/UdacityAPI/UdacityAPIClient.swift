@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+/// The API Client used to connect with the Udacity auth API.
+final class UdacityAPIClient: APIClient {
+
+}

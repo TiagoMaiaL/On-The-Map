@@ -14,6 +14,7 @@
 		47AF953821FA14EA006A112B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF953721FA14EA006A112B /* LoginViewController.swift */; };
 		47AF953B21FA2661006A112B /* UdacityAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF953A21FA2661006A112B /* UdacityAPIClient.swift */; };
 		47AF953D21FA270A006A112B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF953C21FA270A006A112B /* APIClient.swift */; };
+		47B990F621FB212900761C86 /* UdacityAPIClient+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990F521FB212900761C86 /* UdacityAPIClient+Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		47AF953721FA14EA006A112B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		47AF953A21FA2661006A112B /* UdacityAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityAPIClient.swift; sourceTree = "<group>"; };
 		47AF953C21FA270A006A112B /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		47B990F521FB212900761C86 /* UdacityAPIClient+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UdacityAPIClient+Constants.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				47AF953A21FA2661006A112B /* UdacityAPIClient.swift */,
+				47B990F521FB212900761C86 /* UdacityAPIClient+Constants.swift */,
 			);
 			path = UdacityAPI;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				47AF953821FA14EA006A112B /* LoginViewController.swift in Sources */,
 				47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */,
 				47AF953B21FA2661006A112B /* UdacityAPIClient.swift in Sources */,
+				47B990F621FB212900761C86 /* UdacityAPIClient+Constants.swift in Sources */,
 				47AF953D21FA270A006A112B /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
