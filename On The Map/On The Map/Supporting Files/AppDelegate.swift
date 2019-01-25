@@ -20,6 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let client = UdacityAPIClient()
         // TODO: Inject the API client in the controller.
+//        client.logIn(withUsername: "", password: "") { accountKey, sessionID, error in
+//            guard error == nil else {
+//                print("error")
+//                return
+//            }
+//
+//            print("account key: " + accountKey!)
+//            print("session id: " + sessionID!)
+//
+//            client.getUserInfo(usingUserIdentifier: accountKey!) { (userData, error) in
+//                print(userData)
+//            }
+//        }
 
         return true
     }

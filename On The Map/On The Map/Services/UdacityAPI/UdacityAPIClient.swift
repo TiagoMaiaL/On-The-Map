@@ -48,7 +48,8 @@ final class UdacityAPIClient: APIClient {
     func logIn(
         withUsername username: String,
         password: String,
-        andCompletionHandler handler: @escaping (String?, String?, Error?) -> ()
+        // TODO: Now it's only returning strings, later on it must return models for account and session.
+        andCompletionHandler handler: @escaping (String?, String?, Error?) -> Void
         ) {
         let body = """
         {
@@ -71,22 +72,22 @@ final class UdacityAPIClient: APIClient {
 
             let json = json!
 
-            guard let account = json[JSONResponseKeys.Account] as? [String: String] else {
+            guard let account = json[JSONResponseKeys.Account] as? [String: AnyObject] else {
                 handler(nil, nil, RequestError.malformedJson)
                 return
             }
 
-            guard let accountKey = account[JSONResponseKeys.AccountKey] else {
+            guard let accountKey = account[JSONResponseKeys.AccountKey] as? String else {
                 handler(nil, nil, RequestError.malformedJson)
                 return
             }
 
-            guard let session = json[JSONResponseKeys.Session] as? [String: String] else {
+            guard let session = json[JSONResponseKeys.Session] as? [String: AnyObject] else {
                 handler(nil, nil, RequestError.malformedJson)
                 return
             }
 
-            guard let sessionID = session[JSONResponseKeys.SessionID] else {
+            guard let sessionID = session[JSONResponseKeys.SessionID] as? String else {
                 handler(nil, nil, RequestError.malformedJson)
                 return
             }
@@ -107,7 +108,29 @@ final class UdacityAPIClient: APIClient {
     /// - Parameters:
     ///     - userID: the identifier of the user to get the details from.
     ///     - completionHandler: the closure called when the details request returns.
-    func getUserInfo(usingUserIdentifier userID: String) {
-        // TODO:
+    func getUserInfo(
+        usingUserIdentifier userID: String,
+        // TODO: For now it only returns a dictionary. Later on this must be an account struct.
+        andCompletionHandler handler: @escaping ([String: AnyObject]?, Error?) -> Void
+    ) {
+        let url = baseURL.appendingPathComponent(Methods.User.byReplacingKey(URLKeys.UserID, withValue: userID))
+        _ = getConfiguredTaskForGET(withAbsolutePath: url.absoluteString, parameters: [:]) { json, error in
+            guard error == nil else {
+                handler(nil, error!)
+                return
+            }
+
+            let json = json!
+
+            guard let firstName = json[JSONResponseKeys.UserFirstName] as? String,
+                let lastName = json[JSONResponseKeys.UserLastName] as? String else {
+                    handler(nil, RequestError.malformedJson)
+                    return
+            }
+
+            print("Full name: \(firstName) \(lastName)")
+
+            handler(json, nil)
+        }
     }
 }

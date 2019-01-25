@@ -27,7 +27,7 @@ extension UdacityAPIClient {
     /// The methods used in the API.
     enum Methods {
         static let Session = "session"
-        static let User = "user/{\(URLKeys.UserID)}"
+        static let User = "users/{\(URLKeys.UserID)}"
     }
 
     /// The keys to access the data in the returned json data.
@@ -36,5 +36,8 @@ extension UdacityAPIClient {
         static let AccountKey = "key"
         static let Session = "session"
         static let SessionID = "id"
+        static let User = "user"
+        static let UserFirstName = "first_name"
+        static let UserLastName = "last_name"
     }
 }

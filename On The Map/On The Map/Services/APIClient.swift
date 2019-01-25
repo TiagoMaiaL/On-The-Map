@@ -218,3 +218,15 @@ class APIClient {
         return components.url
     }
 }
+
+extension String {
+
+    /// Returns a string in which the key is substituted with the given value, if found.
+    /// - Parameters:
+    ///     - key: the key to be found and replaced.
+    ///     - value: the value to be used when replacing the key.
+    /// - Returns: the replaced string.
+    func byReplacingKey(_ key: String, withValue value: String) -> String {
+        return replacingOccurrences(of: "{\(key)}", with: value)
+    }
+}
