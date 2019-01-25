@@ -35,7 +35,11 @@ final class UdacityAPIClient: APIClient {
     ///     - username: the name of the user.
     ///     - password: the password of the user.
     ///     - completionHandler: the closure called when the login request returns.
-    func logIn(withUsername username: String, andPassword password: String) {
+    func logIn(
+        withUsername username: String,
+        password: String,
+        andCompletionHandler handler: @escaping (String?, String?, Error?) -> ()
+        ) {
         var components = URLComponents()
         components.scheme = API.Scheme
         components.host = API.Host
@@ -61,10 +65,35 @@ final class UdacityAPIClient: APIClient {
             jsonBody: body
         ) { json, error in
             guard error == nil else {
+                handler(nil, nil, error)
                 return
             }
 
-            print(json!)
+            let json = json!
+
+            guard let account = json[JSONResponseKeys.Account] as? [String: String] else {
+                handler(nil, nil, RequestError.malformedJson)
+                return
+            }
+
+            guard let accountKey = account[JSONResponseKeys.AccountKey] else {
+                handler(nil, nil, RequestError.malformedJson)
+                return
+            }
+
+            guard let session = json[JSONResponseKeys.Session] as? [String: String] else {
+                handler(nil, nil, RequestError.malformedJson)
+                return
+            }
+
+            guard let sessionID = session[JSONResponseKeys.SessionID] else {
+                handler(nil, nil, RequestError.malformedJson)
+                return
+            }
+
+            self.accountKey = accountKey
+            self.sessionID = sessionID
+            handler(accountKey, sessionID, nil)
         }
     }
 
