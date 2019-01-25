@@ -19,6 +19,16 @@ final class UdacityAPIClient: APIClient {
     /// The account key returned when the user logs in.
     private(set) var accountKey: String?
 
+    /// The base URL used for the requests in the API.
+    private lazy var baseURL: URL = {
+        guard let url = mountBaseURL(usingScheme: API.Scheme, host: API.Host, andPath: API.Path) else {
+            assertionFailure("Couldn't mount the base url.")
+            return URL(string: "")!
+        }
+
+        return url
+    }()
+
     // MARK: Initializers
 
     override init() {
@@ -40,16 +50,6 @@ final class UdacityAPIClient: APIClient {
         password: String,
         andCompletionHandler handler: @escaping (String?, String?, Error?) -> ()
         ) {
-        var components = URLComponents()
-        components.scheme = API.Scheme
-        components.host = API.Host
-        components.path = API.Path
-
-        guard let url = components.url?.appendingPathComponent(Methods.Session) else {
-            assertionFailure("Failed to mount the URL.")
-            return
-        }
-
         let body = """
         {
             "udacity": {
@@ -60,7 +60,7 @@ final class UdacityAPIClient: APIClient {
 """
 
         _ = getConfiguredTaskForPOST(
-            withAbsolutePath: url.absoluteString,
+            withAbsolutePath: baseURL.appendingPathComponent(Methods.Session).absoluteString,
             parameters: [:],
             jsonBody: body
         ) { json, error in

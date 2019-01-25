@@ -203,4 +203,18 @@ class APIClient {
 
         return json
     }
+
+    /// Mounts a base URL using the passed parameters.
+    /// - Parameters:
+    ///     - scheme: the networking protocol to be used.
+    ///     - host: the host part of the url.
+    ///     - path: the base path to be used.
+    func mountBaseURL(usingScheme scheme: String, host: String, andPath path: String) -> URL? {
+        var components = URLComponents()
+        components.scheme = scheme
+        components.host = host
+        components.path = path
+
+        return components.url
+    }
 }
