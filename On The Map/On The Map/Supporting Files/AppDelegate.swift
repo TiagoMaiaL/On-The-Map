@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: App Life Cycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let client = UdacityAPIClient()
+        // TODO: Inject the API client in the controller.
+
         return true
     }
 }

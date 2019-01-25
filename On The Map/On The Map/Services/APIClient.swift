@@ -35,6 +35,10 @@ class APIClient {
     /// The main session used to access any remote resources.
     let session = URLSession.shared
 
+    /// The closure in charge of making any pre handling of the returned data from the endpoint methods.
+    /// - Note: Assign a closure to this property if it's necessary to any pre-handling of the data returned.
+    var preHandleData: ((Data) -> Data)?
+
     // MARK: Imperatives
 
     /// Returns a resumed data task to access a resource using the GET HTTP method.
@@ -55,7 +59,7 @@ class APIClient {
             forHTTPMethod: .get,
             path: path,
             parameters: parameters,
-            body: nil,
+            jsonBody: nil,
             andCompletionHandler: handler
         )
     }
@@ -64,13 +68,13 @@ class APIClient {
     /// - Parameters:
     ///     - path: The path of the desired resource.
     ///     - parameters: The parameters to be sent with the request.
-    ///     - body: The body json parameters to be send with the request.
+    ///     - jsonBody: The body json parameters to be sent with the request.
     ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     func getConfiguredTaskForPOST(
         withAbsolutePath path: String,
         parameters: [String: String],
-        body: [String: String],
+        jsonBody: String,
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
@@ -78,7 +82,7 @@ class APIClient {
             forHTTPMethod: .post,
             path: path,
             parameters: parameters,
-            body: body,
+            jsonBody: jsonBody,
             andCompletionHandler: handler
         )
     }
@@ -87,14 +91,14 @@ class APIClient {
     ///     - method: The HTTP method associated with the data task.
     ///     - path: The path of the desired resource.
     ///     - parameters: The parameters to be sent with the request.
-    ///     - body: Optional body json parameters to be send with the post request.
+    ///     - jsonBody: Optional json body parameters to be sent with the post request.
     ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     private func getConfiguredDataTask(
         forHTTPMethod method: HTTPMethod,
         path: String,
         parameters: [String: String],
-        body: [String: String]?,
+        jsonBody: String?,
         andCompletionHandler handler:  @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
@@ -110,8 +114,8 @@ class APIClient {
 
         switch method {
         case .post:
-            if let body = body {
-                request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+            if let jsonBody = jsonBody {
+                request.httpBody = jsonBody.data(using: .utf8)
             }
         default:
             break
@@ -124,7 +128,10 @@ class APIClient {
                 return
             }
 
-            guard let json = self.deserializeJson(from: data!) else {
+            // Pre-handle the data, if necessary.
+            let data = self.preHandleData?(data!) ?? data!
+
+            guard let json = self.deserializeJson(from: data) else {
                 handler(nil, RequestError.malformedJson)
                 return
             }
