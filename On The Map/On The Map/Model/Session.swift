@@ -25,8 +25,14 @@ struct Session {
         guard let identifier = data[UdacityAPIClient.JSONResponseKeys.SessionID] as? String else {
             return nil
         }
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SZ"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
 
-        guard let expiration = data[UdacityAPIClient.JSONResponseKeys.SessionExpiration] as? Date else {
+        guard let expirationString = data[UdacityAPIClient.JSONResponseKeys.SessionExpiration] as? String,
+            let expiration = formatter.date(from: expirationString) else {
             return nil
         }
 
