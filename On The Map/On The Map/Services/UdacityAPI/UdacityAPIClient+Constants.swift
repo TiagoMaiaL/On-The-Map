@@ -34,8 +34,10 @@ extension UdacityAPIClient {
     enum JSONResponseKeys {
         static let Account = "account"
         static let AccountKey = "key"
+        static let AccountRegistered = "registered"
         static let Session = "session"
         static let SessionID = "id"
+        static let SessionExpiration = "expiration"
         static let User = "user"
         static let UserFirstName = "first_name"
         static let UserLastName = "last_name"

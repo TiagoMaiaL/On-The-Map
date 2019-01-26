@@ -13,11 +13,14 @@ final class UdacityAPIClient: APIClient {
 
     // MARK: Parameters
 
-    /// The session identifier returned when the user logs in.
-    private(set) var sessionID: String?
+    /// The session returned when the user logs in.
+    private(set) var userSession: Session?
 
-    /// The account key returned when the user logs in.
-    private(set) var accountKey: String?
+    /// The account returned when the user logs in.
+    private(set) var userAccount: Account?
+
+    /// The current logged user.
+    private(set) var user: User?
 
     /// The base URL used for the requests in the API.
     private lazy var baseURL: URL = {
@@ -48,8 +51,7 @@ final class UdacityAPIClient: APIClient {
     func logIn(
         withUsername username: String,
         password: String,
-        // TODO: Now it's only returning strings, later on it must return models for account and session.
-        andCompletionHandler handler: @escaping (String?, String?, Error?) -> Void
+        andCompletionHandler handler: @escaping (Account?, Session?, Error?) -> Void
         ) {
         let body = """
         {
@@ -72,29 +74,21 @@ final class UdacityAPIClient: APIClient {
 
             let json = json!
 
-            guard let account = json[JSONResponseKeys.Account] as? [String: AnyObject] else {
-                handler(nil, nil, RequestError.malformedJson)
-                return
+            guard let accountData = json[JSONResponseKeys.Account] as? [String: AnyObject],
+                let account = Account(data: accountData) else {
+                    handler(nil, nil, RequestError.malformedJson)
+                    return
             }
 
-            guard let accountKey = account[JSONResponseKeys.AccountKey] as? String else {
-                handler(nil, nil, RequestError.malformedJson)
-                return
+            guard let sessionData = json[JSONResponseKeys.Session] as? [String: AnyObject],
+                let session = Session(data: sessionData) else {
+                    handler(nil, nil, RequestError.malformedJson)
+                    return
             }
 
-            guard let session = json[JSONResponseKeys.Session] as? [String: AnyObject] else {
-                handler(nil, nil, RequestError.malformedJson)
-                return
-            }
-
-            guard let sessionID = session[JSONResponseKeys.SessionID] as? String else {
-                handler(nil, nil, RequestError.malformedJson)
-                return
-            }
-
-            self.accountKey = accountKey
-            self.sessionID = sessionID
-            handler(accountKey, sessionID, nil)
+            self.userAccount = account
+            self.userSession = session
+            handler(account, session, nil)
         }
     }
 
@@ -110,8 +104,7 @@ final class UdacityAPIClient: APIClient {
     ///     - completionHandler: the closure called when the details request returns.
     func getUserInfo(
         usingUserIdentifier userID: String,
-        // TODO: For now it only returns a dictionary. Later on this must be an account struct.
-        andCompletionHandler handler: @escaping ([String: AnyObject]?, Error?) -> Void
+        andCompletionHandler handler: @escaping (User?, Error?) -> Void
     ) {
         let url = baseURL.appendingPathComponent(Methods.User.byReplacingKey(URLKeys.UserID, withValue: userID))
         _ = getConfiguredTaskForGET(withAbsolutePath: url.absoluteString, parameters: [:]) { json, error in
@@ -120,17 +113,13 @@ final class UdacityAPIClient: APIClient {
                 return
             }
 
-            let json = json!
-
-            guard let firstName = json[JSONResponseKeys.UserFirstName] as? String,
-                let lastName = json[JSONResponseKeys.UserLastName] as? String else {
-                    handler(nil, RequestError.malformedJson)
-                    return
+            guard let user = User(userData: json!) else {
+                handler(nil, RequestError.malformedJson)
+                return
             }
 
-            print("Full name: \(firstName) \(lastName)")
-
-            handler(json, nil)
+            self.user = user
+            handler(user, nil)
         }
     }
 }
