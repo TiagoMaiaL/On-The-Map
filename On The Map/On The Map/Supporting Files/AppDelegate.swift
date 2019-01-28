@@ -18,21 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: App Life Cycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let client = UdacityAPIClient()
-        // TODO: Inject the API client in the controller.
-//        client.logIn(withUsername: "", password: "") { account, session, error in
-//            guard error == nil else {
-//                print("error")
-//                return
-//            }
-//
-//            print(account!)
-//            print(session!)
-//
-//            client.getUserInfo(usingUserIdentifier: account!.key) { (user, error) in
-//                print(user)
-//            }
-//        }
+        if let navigationController = window?.rootViewController as? UINavigationController {
+            if let loginController = navigationController.topViewController as? LoginViewController {
+                loginController.udacityAPIClient = UdacityAPIClient()
+            }
+        }
 
         return true
     }

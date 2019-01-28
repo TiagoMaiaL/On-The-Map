@@ -11,7 +11,13 @@ import UIKit
 /// Controller in charge of handling the login process.
 class LoginViewController: UIViewController {
 
+    // TODO: Adjust the position of the text fields when the keyboard is shown.
+    // TODO: Add an activity indicator to the view.
+
     // MARK: Properties
+
+    /// The Udacity api client used to log the user in and get its details.
+    var udacityAPIClient: UdacityAPIClientProtocol!
 
     /// The main scroll view of the controller.
     /// - Note: The scroll view is used to correclty position the textfields while the keyboard is being shown.
@@ -34,6 +40,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        precondition(udacityAPIClient != nil, "The api client must be injected.")
+
         title = "Login"
 
         // Configure the initial state of the views.
@@ -48,6 +56,14 @@ class LoginViewController: UIViewController {
         unsubscribeFromAllNotifications()
     }
 
+    // MARK: Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SegueIdentifiers.TabBarController {
+            // TODO: Inject the UdacityAPIClient into each tab controller.
+        }
+    }
+
     // MARK: Actions
 
     @IBAction func logIn(_ sender: UIButton?) {
@@ -56,7 +72,50 @@ class LoginViewController: UIViewController {
             return
         }
 
-        // TODO: Start the login process.
+        let textFields = [self.usernameTextField, self.passwordTextField]
+        textFields.forEach { $0?.resignFirstResponder() }
+
+        func displayError(_ error: APIClient.RequestError) {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                })
+
+                var alertMessage: String?
+
+                switch error {
+                case .connection:
+                    alertMessage = "There's a problem with your internet connection, please, fix it and try again."
+                case .response(_):
+                    alertMessage = "The username or password you provided isn't correct."
+                    textFields.forEach { $0?.text = "" }
+                default:
+                    break
+                }
+
+                alert.message = alertMessage
+                self.present(alert, animated: true)
+            }
+        }
+
+        udacityAPIClient.logIn(withUsername: username, password: password) { account, session, error in
+            guard error == nil else {
+                displayError(error!)
+                return
+            }
+
+            self.udacityAPIClient.getUserInfo(usingUserIdentifier: account!.key) { user, error in
+                guard error == nil else {
+                    displayError(error!)
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: SegueIdentifiers.TabBarController, sender: self)
+                }
+            }
+        }
     }
 
     // MARK: Imperatives

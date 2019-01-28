@@ -9,7 +9,7 @@
 import Foundation
 
 /// The API Client used to connect with the Udacity auth API.
-final class UdacityAPIClient: APIClient {
+final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
 
     // MARK: Parameters
 
@@ -43,15 +43,10 @@ final class UdacityAPIClient: APIClient {
 
     // MARK: Imperatives
 
-    /// Logs the user in with the passed parameters.
-    /// - Parameters:
-    ///     - username: the name of the user.
-    ///     - password: the password of the user.
-    ///     - completionHandler: the closure called when the login request returns.
     func logIn(
         withUsername username: String,
         password: String,
-        andCompletionHandler handler: @escaping (Account?, Session?, Error?) -> Void
+        andCompletionHandler handler: @escaping (Account?, Session?, APIClient.RequestError?) -> Void
         ) {
         let body = """
         {
@@ -92,19 +87,13 @@ final class UdacityAPIClient: APIClient {
         }
     }
 
-    /// Logs the user out.
-    /// - Parameter completionHandler: the closure called when the logout request returns.
     func logOut() {
         // TODO:
     }
 
-    /// Gets the user info using the passed user identifier.
-    /// - Parameters:
-    ///     - userID: the identifier of the user to get the details from.
-    ///     - completionHandler: the closure called when the details request returns.
     func getUserInfo(
         usingUserIdentifier userID: String,
-        andCompletionHandler handler: @escaping (User?, Error?) -> Void
+        andCompletionHandler handler: @escaping (User?, APIClient.RequestError?) -> Void
     ) {
         let url = baseURL.appendingPathComponent(Methods.User.byReplacingKey(URLKeys.UserID, withValue: userID))
         _ = getConfiguredTaskForGET(withAbsolutePath: url.absoluteString, parameters: [:]) { json, error in

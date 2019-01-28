@@ -18,6 +18,8 @@
 		47B990F821FB912000761C86 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990F721FB912000761C86 /* Session.swift */; };
 		47B990FA21FB914900761C86 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990F921FB914900761C86 /* Account.swift */; };
 		47B990FC21FB915700761C86 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FB21FB915700761C86 /* User.swift */; };
+		47B990FE21FDDD8400761C86 /* UdacityAPIClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FD21FDDD8400761C86 /* UdacityAPIClientProtocol.swift */; };
+		47B9910021FF51D900761C86 /* ControllerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FF21FF51D900761C86 /* ControllerConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		47B990F721FB912000761C86 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		47B990F921FB914900761C86 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		47B990FB21FB915700761C86 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		47B990FD21FDDD8400761C86 /* UdacityAPIClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityAPIClientProtocol.swift; sourceTree = "<group>"; };
+		47B990FF21FF51D900761C86 /* ControllerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				47AF953721FA14EA006A112B /* LoginViewController.swift */,
+				47B990FF21FF51D900761C86 /* ControllerConstants.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 		47AF953921FA2602006A112B /* UdacityAPI */ = {
 			isa = PBXGroup;
 			children = (
+				47B990FD21FDDD8400761C86 /* UdacityAPIClientProtocol.swift */,
 				47AF953A21FA2661006A112B /* UdacityAPIClient.swift */,
 				47B990F521FB212900761C86 /* UdacityAPIClient+Constants.swift */,
 			);
@@ -206,7 +212,9 @@
 				47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */,
 				47AF953B21FA2661006A112B /* UdacityAPIClient.swift in Sources */,
 				47B990FC21FB915700761C86 /* User.swift in Sources */,
+				47B990FE21FDDD8400761C86 /* UdacityAPIClientProtocol.swift in Sources */,
 				47B990F621FB212900761C86 /* UdacityAPIClient+Constants.swift in Sources */,
+				47B9910021FF51D900761C86 /* ControllerConstants.swift in Sources */,
 				47AF953D21FA270A006A112B /* APIClient.swift in Sources */,
 				47B990FA21FB914900761C86 /* Account.swift in Sources */,
 			);
