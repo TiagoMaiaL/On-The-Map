@@ -12,7 +12,6 @@ import UIKit
 class LoginViewController: UIViewController {
 
     // TODO: Adjust the position of the text fields when the keyboard is shown.
-    // TODO: Add an activity indicator to the view.
 
     // MARK: Properties
 
@@ -34,6 +33,9 @@ class LoginViewController: UIViewController {
 
     /// The button used to initiate the login.
     @IBOutlet private weak var loginButton: UIButton!
+
+    /// The activity indicator showing the loading state.
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     // MARK: View Life Cycle
 
@@ -72,11 +74,14 @@ class LoginViewController: UIViewController {
             return
         }
 
-        let textFields = [self.usernameTextField, self.passwordTextField]
-        textFields.forEach { $0?.resignFirstResponder() }
+        // Disable views to show loading.
+        enableViews(false)
 
         func displayError(_ error: APIClient.RequestError) {
             DispatchQueue.main.async {
+                // Re-enable views when error happens.
+                self.enableViews(true)
+
                 let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
                     alert.dismiss(animated: true, completion: nil)
@@ -89,7 +94,7 @@ class LoginViewController: UIViewController {
                     alertMessage = "There's a problem with your internet connection, please, fix it and try again."
                 case .response(_):
                     alertMessage = "The username or password you provided isn't correct."
-                    textFields.forEach { $0?.text = "" }
+                    [self.usernameTextField, self.passwordTextField].forEach { $0?.text = "" }
                 default:
                     break
                 }
@@ -112,6 +117,8 @@ class LoginViewController: UIViewController {
                 }
 
                 DispatchQueue.main.async {
+                    // Re-enable views when request finishes.
+                    self.enableViews(true)
                     self.performSegue(withIdentifier: SegueIdentifiers.TabBarController, sender: self)
                 }
             }
@@ -119,6 +126,21 @@ class LoginViewController: UIViewController {
     }
 
     // MARK: Imperatives
+
+    /// Enables or disables the views to display the loading state.
+    private func enableViews(_ isEnabled: Bool) {
+        let views = [self.usernameTextField, self.passwordTextField, self.loginButton]
+        views.forEach {
+            $0?.resignFirstResponder()
+            $0?.isEnabled = isEnabled
+        }
+
+        if isEnabled {
+            activityIndicator.stopAnimating()
+        } else {
+            activityIndicator.startAnimating()
+        }
+    }
 
     /// Subscribes to the keyboard notifications.
     private func subscribeToKeyboardNotifications() {
@@ -146,7 +168,7 @@ class LoginViewController: UIViewController {
         let buttonY = view.convert(loginButton.frame, from: loginButton.superview!).origin.y + loginButton.frame.height
         var bottomVariation = buttonY - keyboardY
 
-        // Update the scrollview to adjust the text fields with the keyboard.
+        // Update the scrollview to adjust the text field with the keyboard.
         let bottomInset = scrollView.contentInset.bottom
         if bottomInset > 0 {
             bottomVariation += bottomInset
@@ -194,7 +216,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
-extension LoginViewController {
+extension UIViewController {
 
     // MARK: Notification helper methods
 
@@ -202,12 +224,12 @@ extension LoginViewController {
     /// - Parameters:
     ///     - name: The name of the notification.
     ///     - selector: The selector to be called when the notification is received.
-    private func subscribeToNotification(named name: Notification.Name, usingSelector selector: Selector) {
+    func subscribeToNotification(named name: Notification.Name, usingSelector selector: Selector) {
         NotificationCenter.default.addObserver(self, selector: selector, name: name, object: nil)
     }
 
     /// Unsubscribes from all notifications in the notification center.
-    private func unsubscribeFromAllNotifications() {
+    func unsubscribeFromAllNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
 }

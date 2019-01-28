@@ -15,11 +15,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Huv-hV-s1c">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PmL-X7-3Bp" userLabel="Content view">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="604"/>
@@ -46,7 +46,7 @@
                                                                 <rect key="frame" x="0.0" y="45" width="262.5" height="30"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" returnKeyType="done" textContentType="password"/>
+                                                                <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzA-CA-VOF">
                                                                 <rect key="frame" x="106.5" y="90" width="49" height="30"/>
@@ -62,12 +62,18 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="T9P-AJ-eAS">
+                                                <rect key="frame" x="169" y="399.5" width="37" height="37"/>
+                                                <color key="color" red="0.0" green="0.6588235294" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="T9P-AJ-eAS" firstAttribute="top" secondItem="uzA-CA-VOF" secondAttribute="bottom" constant="15" id="1fY-f9-Ehp"/>
                                             <constraint firstItem="3G4-3f-LDM" firstAttribute="width" secondItem="PmL-X7-3Bp" secondAttribute="width" multiplier="0.7" id="5F3-IC-JUY"/>
                                             <constraint firstItem="xgJ-fe-LLE" firstAttribute="centerX" secondItem="PmL-X7-3Bp" secondAttribute="centerX" id="AED-c4-IrH"/>
                                             <constraint firstItem="xgJ-fe-LLE" firstAttribute="centerY" secondItem="PmL-X7-3Bp" secondAttribute="centerY" id="FNO-Gh-Wir"/>
+                                            <constraint firstItem="T9P-AJ-eAS" firstAttribute="centerX" secondItem="PmL-X7-3Bp" secondAttribute="centerX" id="WYn-Bp-FPm"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -90,9 +96,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Login" id="6Fd-F6-rSh"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="T9P-AJ-eAS" id="19O-7v-TWh"/>
                         <outlet property="contentView" destination="PmL-X7-3Bp" id="QXi-Kf-KW6"/>
                         <outlet property="loginButton" destination="uzA-CA-VOF" id="z7P-cg-D0n"/>
                         <outlet property="passwordTextField" destination="lEa-Xp-Oaw" id="NTv-Kg-lOf"/>

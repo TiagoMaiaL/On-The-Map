@@ -6,9 +6,13 @@
 //  Copyright © 2019 Tiago Maia Lopes. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-/// The segue identifiers used in the app's flow.
-enum SegueIdentifiers {
-    static let TabBarController = "Show tab bar controller"
+extension UIViewController {
+
+    /// The segue identifiers used in the app's flow.
+    enum SegueIdentifiers {
+        static let TabBarController = "Show tab bar controller"
+    }
 }
+
