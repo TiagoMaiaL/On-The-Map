@@ -99,6 +99,7 @@
                     <navigationItem key="navigationItem" title="Login" id="6Fd-F6-rSh"/>
                     <connections>
                         <outlet property="activityIndicator" destination="T9P-AJ-eAS" id="19O-7v-TWh"/>
+                        <outlet property="contentStackView" destination="xgJ-fe-LLE" id="d7g-fi-DFk"/>
                         <outlet property="contentView" destination="PmL-X7-3Bp" id="QXi-Kf-KW6"/>
                         <outlet property="loginButton" destination="uzA-CA-VOF" id="z7P-cg-D0n"/>
                         <outlet property="passwordTextField" destination="lEa-Xp-Oaw" id="NTv-Kg-lOf"/>

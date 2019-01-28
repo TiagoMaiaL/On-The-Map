@@ -25,6 +25,9 @@ class LoginViewController: UIViewController {
     /// The content view inside the scroll view.
     @IBOutlet private weak var contentView: UIView!
 
+    /// The stack view holding the label, fields, and button.
+    @IBOutlet weak var contentStackView: UIStackView!
+
     /// The textfield used to inform the user's name.
     @IBOutlet private weak var usernameTextField: UITextField!
 
@@ -165,7 +168,8 @@ class LoginViewController: UIViewController {
             return
         }
 
-        let buttonY = view.convert(loginButton.frame, from: loginButton.superview!).origin.y + loginButton.frame.height
+        let buttonY = (view.convert(loginButton.frame, from: contentStackView).origin.y + loginButton.frame.height) -
+            self.navigationController!.navigationBar.frame.height
         var bottomVariation = buttonY - keyboardY
 
         // Update the scrollview to adjust the text field with the keyboard.
