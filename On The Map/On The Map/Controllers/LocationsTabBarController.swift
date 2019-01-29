@@ -31,6 +31,8 @@ class LocationsTabBarController: UITabBarController {
         precondition(udacityClient != nil)
         precondition(parseClient != nil)
         precondition(loggedUser != nil)
+
+        delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -44,7 +46,16 @@ class LocationsTabBarController: UITabBarController {
                 return
             }
 
-            // TODO: Pass the locations to each controller.
+            DispatchQueue.main.async {
+                guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
+                    let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
+                        assertionFailure("Couldn't get the controllers.")
+                        return
+                }
+
+                mapController.locations = locations
+                tableViewController.locations = locations
+            }
         }
     }
 
@@ -72,5 +83,14 @@ class LocationsTabBarController: UITabBarController {
 
         alert.message = alertMessage
         present(alert, animated: true)
+    }
+}
+
+extension LocationsTabBarController: UITabBarControllerDelegate {
+
+    // MARK: Tab bar controller delegate methods
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        title = viewController.title
     }
 }
