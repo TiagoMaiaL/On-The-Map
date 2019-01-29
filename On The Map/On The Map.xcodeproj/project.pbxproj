@@ -24,6 +24,7 @@
 		47B9910521FFA90A00761C86 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910421FFA90A00761C86 /* StudentInformation.swift */; };
 		47B9910721FFAB1100761C86 /* ParseAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910621FFAB1100761C86 /* ParseAPIClient.swift */; };
 		47B9910921FFAB5000761C86 /* ParseAPIClient+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910821FFAB5000761C86 /* ParseAPIClient+Constants.swift */; };
+		47B9910B2200B3E100761C86 /* LocationsTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		47B9910421FFA90A00761C86 /* StudentInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		47B9910621FFAB1100761C86 /* ParseAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseAPIClient.swift; sourceTree = "<group>"; };
 		47B9910821FFAB5000761C86 /* ParseAPIClient+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ParseAPIClient+Constants.swift"; sourceTree = "<group>"; };
+		47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			children = (
 				47AF953721FA14EA006A112B /* LoginViewController.swift */,
 				47B990FF21FF51D900761C86 /* ControllerConstants.swift */,
+				47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				47B9910921FFAB5000761C86 /* ParseAPIClient+Constants.swift in Sources */,
 				47B9910321FFA84E00761C86 /* ParseAPIClientProtocol.swift in Sources */,
 				47AF953821FA14EA006A112B /* LoginViewController.swift in Sources */,
+				47B9910B2200B3E100761C86 /* LocationsTabBarController.swift in Sources */,
 				47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */,
 				47AF953B21FA2661006A112B /* UdacityAPIClient.swift in Sources */,
 				47B990FC21FB915700761C86 /* User.swift in Sources */,

@@ -18,10 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: App Life Cycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if let navigationController = window?.rootViewController as? UINavigationController {
-            if let loginController = navigationController.topViewController as? LoginViewController {
-                loginController.udacityAPIClient = UdacityAPIClient()
-            }
+        if let loginController = window?.rootViewController as? LoginViewController {
+            loginController.udacityAPIClient = UdacityAPIClient()
         }
 
         return true

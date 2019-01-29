@@ -65,7 +65,12 @@ class LoginViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.TabBarController {
-            // TODO: Inject the UdacityAPIClient into each tab controller.
+            if let navigationController = segue.destination as? UINavigationController,
+                let tabController = navigationController.visibleViewController as? LocationsTabBarController {
+                tabController.udacityClient = udacityAPIClient
+                tabController.parseClient = ParseAPIClient()
+                tabController.loggedUser = udacityAPIClient.user
+            }
         }
     }
 
@@ -168,8 +173,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        let buttonY = (view.convert(loginButton.frame, from: contentStackView).origin.y + loginButton.frame.height) -
-            self.navigationController!.navigationBar.frame.height
+        let buttonY = (view.convert(loginButton.frame, from: contentStackView).origin.y + loginButton.frame.height)
         var bottomVariation = buttonY - keyboardY
 
         // Update the scrollview to adjust the text field with the keyboard.
