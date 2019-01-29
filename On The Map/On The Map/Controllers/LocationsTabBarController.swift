@@ -36,6 +36,41 @@ class LocationsTabBarController: UITabBarController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // TODO: Request the student locations.
+        parseClient.fetchStudentLocations(withLimit: 100, skippingPages: 0) { locations, error in
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    self.displayError(error!)
+                }
+                return
+            }
+
+            // TODO: Pass the locations to each controller.
+        }
+    }
+
+    // MARK: Imperatives
+
+    /// Displays an error alert to the user.
+    /// - Parameters:
+    ///     - error: The error to be displayed to the user.
+    private func displayError(_ error: APIClient.RequestError) {
+        let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
+            alert.dismiss(animated: true, completion: nil)
+        })
+
+        var alertMessage: String?
+
+        switch error {
+        case .connection:
+            alertMessage = "There's a problem with your internet connection, please, fix it and try again."
+        default:
+            alertMessage = """
+            There was an error while downloading the students' locations, please, contact the app developer.
+            """
+        }
+
+        alert.message = alertMessage
+        present(alert, animated: true)
     }
 }
