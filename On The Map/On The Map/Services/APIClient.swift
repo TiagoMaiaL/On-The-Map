@@ -39,6 +39,9 @@ class APIClient {
     /// - Note: Assign a closure to this property if it's necessary to any pre-handling of the data returned.
     var preHandleData: ((Data) -> Data)?
 
+    /// Any request headers required to use the API endpoints.
+    var requiredAPIHeaders: [String: String]?
+
     // MARK: Imperatives
 
     /// Returns a resumed data task to access a resource using the GET HTTP method.
@@ -111,6 +114,12 @@ class APIClient {
         request.httpMethod = method.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        if let headers = requiredAPIHeaders {
+            headers.forEach { key, value in
+                request.addValue(value, forHTTPHeaderField: key)
+            }
+        }
 
         switch method {
         case .post:

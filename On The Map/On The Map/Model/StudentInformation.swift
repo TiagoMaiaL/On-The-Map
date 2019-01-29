@@ -54,7 +54,8 @@ struct StudentInformation {
             return nil
         }
 
-        guard let mediaUrl = informationData[ParseAPIClient.JSONResponseKeys.MediaUrl] as? URL else {
+        guard let mediaUrlText = informationData[ParseAPIClient.JSONResponseKeys.MediaUrl] as? String,
+            let mediaUrl = URL(string: mediaUrlText) else {
             return nil
         }
 

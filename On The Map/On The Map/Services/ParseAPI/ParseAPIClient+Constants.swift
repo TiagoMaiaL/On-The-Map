@@ -10,8 +10,27 @@ import Foundation
 
 extension ParseAPIClient {
 
+    /// The constants used to generate an url to access a resource in the API.
+    enum API {
+        static let Scheme = "https"
+        static let Host = "parse.udacity.com"
+        static let Path = "/parse/classes"
+    }
+
+    /// The methods used in the API.
+    enum Methods {
+        static let StudentLocation = "StudentLocation"
+    }
+
+    /// The keys of the parameters sent in the requests.
+    enum ParameterKeys {
+        static let Limit = "limit"
+        static let Page = "skip"
+    }
+
     /// The keys of the json returned in the responses.
     enum JSONResponseKeys {
+        static let Results = "results"
         static let FirstName = "firstName"
         static let LastName = "lastName"
         static let Latitude = "latitude"
