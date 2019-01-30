@@ -13,34 +13,50 @@ class LocationsTableViewController: UITableViewController {
 
     // MARK: Properties
 
+    /// The location cell identifier used in this controller.
+    private let locationCellIdentifier = "locationCell"
+
     /// The locations to be displayed.
-    var locations: [StudentInformation]?
-
-    // MARK: Life cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var locations: [StudentInformation]? {
+        didSet {
+            if locations != nil {
+                self.tableView?.reloadData()
+            }
+        }
     }
 
-    // MARK: - Table view data source
+    // MARK: Table view data source methods
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return locations?.count ?? 0
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: locationCellIdentifier, for: indexPath)
 
-        // Configure the cell...
+        guard let currentLocation = locations?[indexPath.row] else {
+            assertionFailure("The location must be successfully retrieved.")
+            return cell
+        }
+
+        cell.textLabel?.text = "\(currentLocation.firstName) \(currentLocation.lastName)"
+        cell.detailTextLabel?.text = currentLocation.mediaUrl.absoluteString
 
         return cell
     }
-    */
+
+    // MARK: Table view delegate methods
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let currentLocation = locations?[indexPath.row] else {
+            assertionFailure("The locations must be set in order to receive row touches.")
+            return
+        }
+
+        UIApplication.shared.openDefaultBrowser(accessingAddress: currentLocation.mediaUrl.absoluteString)
+    }
 }
