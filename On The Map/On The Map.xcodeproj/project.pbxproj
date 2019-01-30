@@ -27,6 +27,7 @@
 		47B9910B2200B3E100761C86 /* LocationsTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */; };
 		47B9910D2200BCFC00761C86 /* LocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */; };
 		47B9910F2200BD3100761C86 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */; };
+		47B991122200D53400761C86 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B991112200D53400761C86 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTabBarController.swift; sourceTree = "<group>"; };
 		47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsMapViewController.swift; sourceTree = "<group>"; };
 		47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTableViewController.swift; sourceTree = "<group>"; };
+		47B991112200D53400761C86 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47B991122200D53400761C86 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +73,7 @@
 			children = (
 				47AF951F21F9E78E006A112B /* On The Map */,
 				47AF951E21F9E78E006A112B /* Products */,
+				47B991102200D53300761C86 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +167,14 @@
 				47B9910821FFAB5000761C86 /* ParseAPIClient+Constants.swift */,
 			);
 			path = ParseAPI;
+			sourceTree = "<group>";
+		};
+		47B991102200D53300761C86 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				47B991112200D53400761C86 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

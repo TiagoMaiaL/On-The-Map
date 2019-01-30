@@ -25,3 +25,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
+
+extension UIApplication {
+
+    // MARK: Imperatives
+
+    /// Opens the browser using the passed url text as an address or search.
+    /// - Parameter addressText: The address or search to be accessed by the browser.
+    func openDefaultBrowser(accessingAddress addressText: String) {
+        var addressText = addressText
+
+        // If the address text is not a valid address, embed it in a google search.
+        let componentsSplitted = addressText.split(separator: ".")
+        if componentsSplitted.count == 1 {
+            addressText = "https://www.google.com/search?q=\(componentsSplitted.first!)"
+        }
+
+        guard let url = URL(string: addressText) else {
+            assertionFailure("Couldn't mount the url.")
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+}
