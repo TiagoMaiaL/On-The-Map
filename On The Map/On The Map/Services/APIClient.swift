@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Base class containing factory methods for getting configured data tasks for HTTP GET and POST methods.
 class APIClient {
@@ -66,7 +67,6 @@ class APIClient {
             jsonBody: nil,
             completionHandler: handler
         )
-        task?.resume()
 
         return task
     }
@@ -92,7 +92,6 @@ class APIClient {
             jsonBody: jsonBody,
             completionHandler: handler
         )
-        task?.resume()
 
         return task
     }
@@ -125,8 +124,6 @@ class APIClient {
                 return urlRequest
             }
         )
-
-        task?.resume()
 
         return task
     }
@@ -180,6 +177,10 @@ class APIClient {
         }
 
         let task = session.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
+
             let error = self.checkForErrors(inData: data, response: response, andError: error)
             guard error == nil else {
                 handler(nil, error)
@@ -196,6 +197,11 @@ class APIClient {
 
             handler(json, nil)
         }
+
+        DispatchQueue.main.async {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
+        task.resume()
 
         return task
     }
