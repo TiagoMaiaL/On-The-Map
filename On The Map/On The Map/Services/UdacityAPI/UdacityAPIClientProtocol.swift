@@ -37,7 +37,7 @@ protocol UdacityAPIClientProtocol {
 
     /// Logs the user out.
     /// - Parameter completionHandler: the closure called when the logout request returns.
-    func logOut()
+    func logOut(withCompletionHandler handler: @escaping (Bool, APIClient.RequestError?) -> Void)
 
     /// Gets the user info using the passed user identifier.
     /// - Parameters:

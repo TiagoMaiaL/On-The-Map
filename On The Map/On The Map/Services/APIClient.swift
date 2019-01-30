@@ -28,6 +28,7 @@ class APIClient {
     private enum HTTPMethod: String {
         case get = "GET"
         case post = "POST"
+        case delete = "DELETE"
     }
 
     // MARK: Properties
@@ -58,13 +59,16 @@ class APIClient {
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
-        return getConfiguredDataTask(
+        let task = getConfiguredDataTask(
             forHTTPMethod: .get,
             path: path,
             parameters: parameters,
             jsonBody: nil,
-            andCompletionHandler: handler
+            completionHandler: handler
         )
+        task?.resume()
+
+        return task
     }
 
     /// Returns a resumed data task to access a resource using the POST HTTP method.
@@ -81,28 +85,69 @@ class APIClient {
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
-        return getConfiguredDataTask(
+        let task = getConfiguredDataTask(
             forHTTPMethod: .post,
             path: path,
             parameters: parameters,
             jsonBody: jsonBody,
-            andCompletionHandler: handler
+            completionHandler: handler
         )
+        task?.resume()
+
+        return task
+    }
+
+    /// Returns a resumed data task to delete a resource using the DELETE HTTP method.
+    /// - Parameters:
+    ///     - path: The path of the resource to be deleted.
+    ///     - parameters: The parameters to be sent with the request.
+    ///     - completionHandler: The completion handler called when the task finishes or there's an error.
+    /// - Returns: The configured and resumed data task associated with the passed arguments.
+    func getConfiguredTaskForDELETE(
+        withAbsolutePath path: String,
+        parameters: [String: String],
+        andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
+        ) -> URLSessionDataTask? {
+
+        let task = getConfiguredDataTask(
+            forHTTPMethod: .delete,
+            path: path,
+            parameters: parameters,
+            jsonBody: nil,
+            completionHandler: handler,
+            andUsingRequestPreHandler: { urlRequest in
+                var urlRequest = urlRequest
+
+                if let xsrfCookie = HTTPCookieStorage.shared.cookies?.filter({ $0.name == "XSRF-TOKEN" }).first {
+                    urlRequest.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+                }
+
+                return urlRequest
+            }
+        )
+
+        task?.resume()
+
+        return task
     }
 
     /// Makes a data task configured for the specific HTTP method and passed parameters.
+    /// - Parameters:
     ///     - method: The HTTP method associated with the data task.
     ///     - path: The path of the desired resource.
     ///     - parameters: The parameters to be sent with the request.
     ///     - jsonBody: Optional json body parameters to be sent with the post request.
     ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
+    ///     - requestPreHandler: The closure in charge of making any custom configurations to the url request
+    ///                          before initiating the data task.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     private func getConfiguredDataTask(
         forHTTPMethod method: HTTPMethod,
         path: String,
         parameters: [String: String],
         jsonBody: String?,
-        andCompletionHandler handler:  @escaping (DeserializedJson?, RequestError?) -> Void
+        completionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void,
+        andUsingRequestPreHandler requestPreHandler: ((URLRequest) -> URLRequest)? = nil
         ) -> URLSessionDataTask? {
 
         guard let url = getURL(fromPath: path, andParameters: parameters) else {
@@ -119,6 +164,10 @@ class APIClient {
             headers.forEach { key, value in
                 request.addValue(value, forHTTPHeaderField: key)
             }
+        }
+
+        if let requestPreHandler = requestPreHandler {
+            request = requestPreHandler(request)
         }
 
         switch method {
@@ -147,8 +196,6 @@ class APIClient {
 
             handler(json, nil)
         }
-
-        task.resume()
 
         return task
     }

@@ -37,11 +37,20 @@ class LocationsTabBarController: UITabBarController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        loadLocations()
+    }
+
+    // MARK: Actions
+
+    /// Loads the most recent student locations.
+    @IBAction func loadLocations(_ sender: UIBarButtonItem? = nil) {
+        sender?.isEnabled = false
 
         parseClient.fetchStudentLocations(withLimit: 100, skippingPages: 0) { locations, error in
             guard error == nil else {
                 DispatchQueue.main.async {
                     self.displayError(error!)
+                    sender?.isEnabled = true
                 }
                 return
             }
@@ -55,8 +64,15 @@ class LocationsTabBarController: UITabBarController {
 
                 mapController.locations = locations
                 tableViewController.locations = locations
+
+                sender?.isEnabled = true
             }
         }
+    }
+
+    /// Logs the user out of the application.
+    @IBAction func logUserOut(_ sender: UIBarButtonItem) {
+        // TODO: Send the logout request.
     }
 
     // MARK: Imperatives

@@ -87,8 +87,18 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
         }
     }
 
-    func logOut() {
-        // TODO:
+    func logOut(withCompletionHandler handler: @escaping (Bool, APIClient.RequestError?) -> Void) {
+        _ = getConfiguredTaskForDELETE(
+            withAbsolutePath: baseURL.appendingPathComponent(Methods.Session).absoluteString,
+            parameters: [:]
+        ) { json, error in
+            guard error == nil else {
+                handler(false, error)
+                return
+            }
+
+            handler(true, nil)
+        }
     }
 
     func getUserInfo(

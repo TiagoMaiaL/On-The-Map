@@ -293,11 +293,23 @@
                 <tabBarController title="Map" automaticallyAdjustsScrollViewInsets="NO" id="1XB-BM-JKJ" customClass="LocationsTabBarController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Map" id="gAu-fK-MI8">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="q3p-Ez-afK">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="vog-SD-pOh">
                             <connections>
-                                <segue destination="vNF-w7-dsG" kind="show" id="fE3-km-72o"/>
+                                <action selector="logUserOut:" destination="1XB-BM-JKJ" id="aGg-2b-pRB"/>
                             </connections>
                         </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="q3p-Ez-afK">
+                                <connections>
+                                    <segue destination="vNF-w7-dsG" kind="show" id="fE3-km-72o"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="uAj-bL-0tX">
+                                <connections>
+                                    <action selector="loadLocations:" destination="1XB-BM-JKJ" id="Fyl-vD-UDK"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tLM-I9-wti">
