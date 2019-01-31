@@ -41,13 +41,19 @@ extension UIApplication {
             addressText = "https://www.google.com/search?q=\(componentsSplitted.first!)"
         }
 
-        guard let url = URL(string: addressText) else {
+        guard var addressURL = URL(string: addressText),
+            var components = URLComponents(url: addressURL, resolvingAgainstBaseURL: true) else {
             assertionFailure("Couldn't mount the url.")
             return
         }
 
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if components.scheme == nil {
+            components.scheme = "https"
+            addressURL = components.url!
+        }
+
+        if UIApplication.shared.canOpenURL(addressURL) {
+            UIApplication.shared.open(addressURL, options: [:], completionHandler: nil)
         }
     }
 }
