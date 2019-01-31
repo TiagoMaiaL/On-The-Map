@@ -29,9 +29,6 @@ class LocationsMapViewController: UIViewController {
     /// The map displaying each location of each student.
     @IBOutlet weak var mapView: MKMapView!
 
-    /// The gesture recognizer added to handle touches in the annotation view while its selected.
-    private var selectedAnnotationTapGestureRecognizer: UITapGestureRecognizer?
-
     // MARK: Life cycle
 
     override func viewDidLoad() {
@@ -57,14 +54,10 @@ class LocationsMapViewController: UIViewController {
     // MARK: Actions
 
     /// Displays the link found in the selected annotation.
-    @objc private func displayPostedLink() {
-        guard let selectedAnnotation = mapView.selectedAnnotations.first as? StudentAnnotation else {
-            assertionFailure("The annotation must be of type StudentAnnotation.")
-            return
-        }
-
-        guard let urlText = selectedAnnotation.subtitle else {
-            assertionFailure("The url text must be set.")
+    /// - Parameter sender: The tap gesture recognizer firing the action.
+    @objc private func displayPostedLink(_ sender: AnnotationLinkTapRecognizer?) {
+        guard let urlText = sender?.link else {
+            assertionFailure("The link of the tap recognizer must be set.")
             return
         }
 
@@ -82,7 +75,10 @@ extension LocationsMapViewController: MKMapViewDelegate {
         ) as? MKPinAnnotationView
 
         if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationViewReuseIdentifier)
+            annotationView = MKPinAnnotationView(
+                annotation: annotation,
+                reuseIdentifier: annotationViewReuseIdentifier
+            )
         }
 
         annotationView.canShowCallout = true
@@ -92,21 +88,29 @@ extension LocationsMapViewController: MKMapViewDelegate {
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        selectedAnnotationTapGestureRecognizer = UITapGestureRecognizer(
+        guard let annotation = view.annotation as? StudentAnnotation,
+         let link = annotation.subtitle else {
+            assertionFailure("The annotation must be of the student annotation type and also have a valid link.")
+            return
+        }
+
+        let tapRecognizer = AnnotationLinkTapRecognizer(
             target: self,
-            action: #selector(displayPostedLink)
+            action: #selector(displayPostedLink(_:)),
+            link: link
         )
-        view.addGestureRecognizer(selectedAnnotationTapGestureRecognizer!)
+        view.addGestureRecognizer(tapRecognizer)
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        view.removeGestureRecognizer(selectedAnnotationTapGestureRecognizer!)
-        selectedAnnotationTapGestureRecognizer = nil
+        if let recognizer = view.gestureRecognizers?.filter({ $0 is AnnotationLinkTapRecognizer }).first {
+            view.removeGestureRecognizer(recognizer)
+        }
     }
 }
 
 /// Represents a student location on the map.
-class StudentAnnotation: NSObject, MKAnnotation {
+private class StudentAnnotation: NSObject, MKAnnotation {
 
     // MARK: Properties
 

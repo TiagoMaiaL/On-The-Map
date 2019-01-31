@@ -28,6 +28,7 @@
 		47B9910D2200BCFC00761C86 /* LocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */; };
 		47B9910F2200BD3100761C86 /* LocationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */; };
 		47B991122200D53400761C86 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B991112200D53400761C86 /* MapKit.framework */; };
+		47B99115220352CC00761C86 /* AnnotationLinkTapRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B99114220352CC00761C86 /* AnnotationLinkTapRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsMapViewController.swift; sourceTree = "<group>"; };
 		47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTableViewController.swift; sourceTree = "<group>"; };
 		47B991112200D53400761C86 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		47B99114220352CC00761C86 /* AnnotationLinkTapRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationLinkTapRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +116,7 @@
 				47AF953721FA14EA006A112B /* LoginViewController.swift */,
 				47B990FF21FF51D900761C86 /* ControllerConstants.swift */,
 				47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */,
-				47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */,
+				47B991132203529F00761C86 /* LocationsMapViewController */,
 				47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */,
 			);
 			path = Controllers;
@@ -175,6 +177,15 @@
 				47B991112200D53400761C86 /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		47B991132203529F00761C86 /* LocationsMapViewController */ = {
+			isa = PBXGroup;
+			children = (
+				47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */,
+				47B99114220352CC00761C86 /* AnnotationLinkTapRecognizer.swift */,
+			);
+			path = LocationsMapViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +275,7 @@
 				47B990F621FB212900761C86 /* UdacityAPIClient+Constants.swift in Sources */,
 				47B9910021FF51D900761C86 /* ControllerConstants.swift in Sources */,
 				47AF953D21FA270A006A112B /* APIClient.swift in Sources */,
+				47B99115220352CC00761C86 /* AnnotationLinkTapRecognizer.swift in Sources */,
 				47B990FA21FB914900761C86 /* Account.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
