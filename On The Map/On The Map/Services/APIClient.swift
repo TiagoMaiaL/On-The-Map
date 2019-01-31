@@ -17,6 +17,9 @@ class APIClient {
     /// A json data that has been deserialized into foundation objects.
     typealias DeserializedJson = [String: AnyObject]
 
+    /// A closure that gets a url request and returns it configured for a specific task.
+    typealias RequestConfigurer = (URLRequest) -> URLRequest
+
     /// The possible errors passed to the handlers when something goes wrong.
     enum RequestError: Error {
         case connection
@@ -65,7 +68,7 @@ class APIClient {
             path: path,
             parameters: parameters,
             jsonBody: nil,
-            completionHandler: handler
+            withCompletionHandler: handler
         )
 
         return task
@@ -90,7 +93,7 @@ class APIClient {
             path: path,
             parameters: parameters,
             jsonBody: jsonBody,
-            completionHandler: handler
+            withCompletionHandler: handler
         )
 
         return task
@@ -113,10 +116,11 @@ class APIClient {
             path: path,
             parameters: parameters,
             jsonBody: nil,
-            completionHandler: handler,
-            andUsingRequestPreHandler: { urlRequest in
+            withCompletionHandler: handler,
+            andUsingRequestConfigurer: { urlRequest in
                 var urlRequest = urlRequest
 
+                // Add the cached token as a header to delete the session.
                 if let xsrfCookie = HTTPCookieStorage.shared.cookies?.filter({ $0.name == "XSRF-TOKEN" }).first {
                     urlRequest.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
                 }
@@ -135,7 +139,7 @@ class APIClient {
     ///     - parameters: The parameters to be sent with the request.
     ///     - jsonBody: Optional json body parameters to be sent with the post request.
     ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
-    ///     - requestPreHandler: The closure in charge of making any custom configurations to the url request
+    ///     - requestConfigurer: The closure in charge of making any custom configurations to the url request
     ///                          before initiating the data task.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     private func getConfiguredDataTask(
@@ -143,8 +147,8 @@ class APIClient {
         path: String,
         parameters: [String: String],
         jsonBody: String?,
-        completionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void,
-        andUsingRequestPreHandler requestPreHandler: ((URLRequest) -> URLRequest)? = nil
+        withCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void,
+        andUsingRequestConfigurer requestConfigurer: RequestConfigurer? = nil
         ) -> URLSessionDataTask? {
 
         guard let url = getURL(fromPath: path, andParameters: parameters) else {
@@ -163,8 +167,8 @@ class APIClient {
             }
         }
 
-        if let requestPreHandler = requestPreHandler {
-            request = requestPreHandler(request)
+        if let requestConfigurer = requestConfigurer {
+            request = requestConfigurer(request)
         }
 
         switch method {
