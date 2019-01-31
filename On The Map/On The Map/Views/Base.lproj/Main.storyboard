@@ -192,7 +192,7 @@
         <!--Add Location-->
         <scene sceneID="8vv-CF-RyQ">
             <objects>
-                <viewController title="Add Location" id="vNF-w7-dsG" sceneMemberID="viewController">
+                <viewController title="Add Location" id="vNF-w7-dsG" customClass="AddLocationViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eOk-PP-aku">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -216,7 +216,7 @@
                                         <rect key="frame" x="85" y="90" width="92" height="30"/>
                                         <state key="normal" title="Find Location"/>
                                         <connections>
-                                            <segue destination="cy0-mq-LtN" kind="show" id="tgg-jS-5rg"/>
+                                            <segue destination="cy0-mq-LtN" kind="show" identifier="show annotation on the map." id="tgg-jS-5rg"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -233,6 +233,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cTD-BQ-ghO"/>
                     </view>
+                    <connections>
+                        <outlet property="linkTextField" destination="lZ9-Wp-V25" id="bTu-JI-0cl"/>
+                        <outlet property="locationTextField" destination="qMa-VA-win" id="5wm-h8-aIO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wad-m5-vvW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
