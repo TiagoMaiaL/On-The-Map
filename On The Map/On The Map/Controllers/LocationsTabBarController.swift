@@ -13,6 +13,9 @@ class LocationsTabBarController: UITabBarController {
 
     // MARK: Properties
 
+    /// The identifier of the segue that takes the user to the controller to add a new location.
+    private let addNewSegueIdentifier = "show controller to add a new segue"
+
     /// The udacity API client used to log the user out.
     var udacityClient: UdacityAPIClientProtocol!
 
@@ -38,6 +41,17 @@ class LocationsTabBarController: UITabBarController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadLocations()
+    }
+
+    // MARK: Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == addNewSegueIdentifier {
+            if let addLocationController = segue.destination as? AddLocationViewController {
+                addLocationController.loggedUser = loggedUser
+                addLocationController.parseClient = parseClient
+            }
+        }
     }
 
     // MARK: Actions

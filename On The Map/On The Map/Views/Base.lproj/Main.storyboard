@@ -245,7 +245,7 @@
         <!--Add Location-->
         <scene sceneID="a0C-MF-YvP">
             <objects>
-                <viewController title="Add Location" id="cy0-mq-LtN" sceneMemberID="viewController">
+                <viewController title="Add Location" id="cy0-mq-LtN" customClass="StudentLocationDetailsViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9xo-U5-0rX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -256,6 +256,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LzC-qy-kCZ">
                                 <rect key="frame" x="56.5" y="617" width="262.5" height="30"/>
                                 <state key="normal" title="FINISH"/>
+                                <connections>
+                                    <action selector="createOrUpdateLocation:" destination="cy0-mq-LtN" eventType="touchUpInside" id="kYC-UX-Vyj"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -270,6 +273,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vSc-yj-neP"/>
                     </view>
+                    <connections>
+                        <outlet property="finishButton" destination="LzC-qy-kCZ" id="ENy-Lc-HDK"/>
+                        <outlet property="mapView" destination="4Jl-eb-Agu" id="Zy3-8u-pOm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TBP-2J-Ohg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -305,7 +312,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="q3p-Ez-afK">
                                 <connections>
-                                    <segue destination="vNF-w7-dsG" kind="show" id="fE3-km-72o"/>
+                                    <segue destination="vNF-w7-dsG" kind="show" identifier="show controller to add a new segue" id="fE3-km-72o"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="refresh" id="uAj-bL-0tX">

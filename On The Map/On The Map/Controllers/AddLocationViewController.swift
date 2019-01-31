@@ -22,10 +22,19 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     /// The text field used to inform the link to be posted.
     @IBOutlet weak var linkTextField: UITextField!
 
+    /// The currently logged in user.
+    var loggedUser: User!
+
+    /// The parse API client used to create or update the user's location.
+    var parseClient: ParseAPIClientProtocol!
+
     // MARK: Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        precondition(loggedUser != nil)
+        precondition(parseClient != nil)
 
         locationTextField.delegate = self
         linkTextField.delegate = self
@@ -45,8 +54,12 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         let locationText = locationTextField.text!
         let linkText = linkTextField.text!
 
-        print(locationText)
-        print(linkText)
+        if let detailsController = segue.destination as? StudentLocationDetailsViewController {
+            detailsController.loggedUser = loggedUser
+            detailsController.parseClient = parseClient
+            detailsController.locationText = locationText
+            detailsController.linkText = linkText
+        }
     }
 }
 
