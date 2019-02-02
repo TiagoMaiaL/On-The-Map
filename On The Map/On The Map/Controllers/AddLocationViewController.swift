@@ -95,13 +95,28 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             self.findLocationButton.isEnabled = true
 
             guard error == nil, let response = response, !response.mapItems.isEmpty else {
-                print("Error")
+                self.displayError(withMessage: "Couldn't find the entered location, please, try a more specific term.")
                 return
             }
 
             self.searchedPlacemark = response.mapItems.first!.placemark
             self.performSegue(withIdentifier: self.segueIdentifier, sender: self)
         }
+    }
+
+    // MARK: Imperatives
+
+    /// Displays an error alert to the user.
+    /// - Parameter message: the error message to be displayed.
+    private func displayError(withMessage message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(title: "Ok", style: .default) { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+
+        present(alert, animated: true)
     }
 }
 
