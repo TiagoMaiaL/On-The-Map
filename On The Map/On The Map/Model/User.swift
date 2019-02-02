@@ -19,6 +19,9 @@ struct User {
     /// The last name of the user.
     let lastName: String
 
+    /// The user key.
+    let key: String
+
     // MARK: Initializers
 
     init?(userData: [String: AnyObject]) {
@@ -29,5 +32,11 @@ struct User {
 
         self.firstName = firstName
         self.lastName = lastName
+
+        guard let key = userData[UdacityAPIClient.JSONResponseKeys.UserKey] as? String else {
+            return nil
+        }
+
+        self.key = key
     }
 }

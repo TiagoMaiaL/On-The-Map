@@ -29,4 +29,7 @@ protocol ParseAPIClientProtocol {
         skippingPages pagesToSkip: Int,
         andUsingCompletionHandler handler: @escaping ([StudentInformation]?, APIClient.RequestError?) -> Void
     )
+
+    /// Creates a student location using the passed data.
+    
 }

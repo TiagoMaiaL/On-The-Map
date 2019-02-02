@@ -31,6 +31,9 @@ struct StudentInformation {
     /// The media url.
     let mediaUrl: URL
 
+    /// The information key.
+    let key: String
+
     // MARK: Initializers
 
     init?(informationData: [String: AnyObject]) {
@@ -59,11 +62,16 @@ struct StudentInformation {
             return nil
         }
 
+        guard let key = informationData[ParseAPIClient.JSONResponseKeys.InformationKey] as? String else {
+            return nil
+        }
+
         self.firstName = firstName
         self.lastName = lastName
         self.latitude = latitude
         self.longitude = longitude
         self.mapTextReference = mapTextReference
         self.mediaUrl = mediaUrl
+        self.key = key
     }
 }

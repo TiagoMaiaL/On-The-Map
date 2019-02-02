@@ -41,5 +41,6 @@ extension UdacityAPIClient {
         static let User = "user"
         static let UserFirstName = "first_name"
         static let UserLastName = "last_name"
+        static let UserKey = "key"
     }
 }
