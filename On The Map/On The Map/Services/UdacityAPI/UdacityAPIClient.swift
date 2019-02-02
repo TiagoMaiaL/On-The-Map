@@ -97,6 +97,9 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
                 return
             }
 
+            self.user = nil
+            self.userSession = nil
+            self.userAccount = nil
             handler(true, nil)
         }
     }
