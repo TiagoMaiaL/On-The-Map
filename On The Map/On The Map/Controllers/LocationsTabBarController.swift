@@ -50,6 +50,10 @@ class LocationsTabBarController: UITabBarController {
             if let addLocationController = segue.destination as? AddLocationViewController {
                 addLocationController.loggedUser = loggedUser
                 addLocationController.parseClient = parseClient
+
+                if let mapController = viewControllers?.first as? LocationsMapViewController {
+                    addLocationController.userLocation = mapController.mapView.userLocation
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 /// Controller in charge of collecting the student information to be posted.
 class AddLocationViewController: UIViewController, UITextFieldDelegate {
@@ -14,7 +15,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: Imperatives
 
     /// The segue identifier taking to the map controller with the student annotation to be posted.
-    private let segueIdentifier = "show annotation on the map."
+    private let segueIdentifier = "show annotation on the map"
 
     /// The text field used to inform the location on the map.
     @IBOutlet weak var locationTextField: UITextField!
@@ -22,11 +23,20 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     /// The text field used to inform the link to be posted.
     @IBOutlet weak var linkTextField: UITextField!
 
+    /// The button used to find the user location.
+    @IBOutlet weak var findLocationButton: UIButton!
+
     /// The currently logged in user.
     var loggedUser: User!
 
     /// The parse API client used to create or update the user's location.
     var parseClient: ParseAPIClientProtocol!
+
+    /// The region of the current user, if retrieved.
+    var userLocation: MKUserLocation?
+
+    /// The placemark searched by the user.
+    private var searchedPlacemark: MKPlacemark?
 
     // MARK: Life cycle
 
@@ -43,10 +53,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: Navigation
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        let isLocationEmpty = locationTextField.text?.isEmpty ?? true
-        let isLinkEmpty = linkTextField.text?.isEmpty ?? true
-
-        return !isLocationEmpty && !isLinkEmpty
+        return searchedPlacemark != nil
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,6 +66,41 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             detailsController.parseClient = parseClient
             detailsController.locationText = locationText
             detailsController.linkText = linkText
+            detailsController.placemark = searchedPlacemark
+        }
+    }
+
+    // MARK: Actions
+
+    @IBAction func findLocationOnMap(_ sender: UIButton?) {
+        guard let locationText = locationTextField.text, !locationText.isEmpty,
+            let linkText = linkTextField.text, !linkText.isEmpty else {
+            return
+        }
+
+        let mapSearchRequest = MKLocalSearch.Request()
+        mapSearchRequest.naturalLanguageQuery = locationText
+        if let userLocation = userLocation {
+            let userRegion = MKCoordinateRegion(
+                center: userLocation.coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
+            )
+            mapSearchRequest.region = userRegion
+        }
+
+        findLocationButton.isEnabled = false
+
+        let localSearch = MKLocalSearch(request: mapSearchRequest)
+        localSearch.start { response, error in
+            self.findLocationButton.isEnabled = true
+
+            guard error == nil, let response = response, !response.mapItems.isEmpty else {
+                print("Error")
+                return
+            }
+
+            self.searchedPlacemark = response.mapItems.first!.placemark
+            self.performSegue(withIdentifier: self.segueIdentifier, sender: self)
         }
     }
 }
@@ -68,14 +110,16 @@ extension AddLocationViewController {
     // MARK: UITextField delegate methods
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-
         if textField == locationTextField {
             linkTextField.becomeFirstResponder()
         } else if textField == linkTextField {
-            performSegue(withIdentifier: segueIdentifier, sender: self)
+            findLocationOnMap(nil)
+            if (textField.text ?? "").isEmpty {
+                return false
+            }
         }
 
+        textField.resignFirstResponder()
         return true
     }
 }

@@ -216,7 +216,7 @@
                                         <rect key="frame" x="85" y="90" width="92" height="30"/>
                                         <state key="normal" title="Find Location"/>
                                         <connections>
-                                            <segue destination="cy0-mq-LtN" kind="show" identifier="show annotation on the map." id="tgg-jS-5rg"/>
+                                            <action selector="findLocationOnMap:" destination="vNF-w7-dsG" eventType="touchUpInside" id="6ai-5R-K4C"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -234,8 +234,10 @@
                         <viewLayoutGuide key="safeArea" id="cTD-BQ-ghO"/>
                     </view>
                     <connections>
+                        <outlet property="findLocationButton" destination="T4h-KD-XnV" id="M74-kl-Clq"/>
                         <outlet property="linkTextField" destination="lZ9-Wp-V25" id="bTu-JI-0cl"/>
                         <outlet property="locationTextField" destination="qMa-VA-win" id="5wm-h8-aIO"/>
+                        <segue destination="cy0-mq-LtN" kind="show" identifier="show annotation on the map" id="YBh-ha-kow"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wad-m5-vvW" userLabel="First Responder" sceneMemberID="firstResponder"/>

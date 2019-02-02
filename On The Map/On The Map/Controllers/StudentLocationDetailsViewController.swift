@@ -26,6 +26,9 @@ class StudentLocationDetailsViewController: UIViewController {
     /// The link text of the student information to be created or updated in the server.
     var linkText: String!
 
+    /// The placemark searched by the user.
+    var placemark: MKPlacemark!
+
     /// The map displaying the chosen location.
     @IBOutlet weak var mapView: MKMapView!
 
@@ -41,12 +44,30 @@ class StudentLocationDetailsViewController: UIViewController {
         precondition(parseClient != nil)
         precondition(locationText != nil)
         precondition(linkText != nil)
+        precondition(placemark != nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Display the map annotation.
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        mapView.addAnnotation(annotation)
+        mapView.centerCoordinate = annotation.coordinate
+        mapView.setRegion(
+            MKCoordinateRegion(
+                center: annotation.coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+            ),
+            animated: true
+        )
     }
 
     // MARK: Actions
 
     @IBAction func createOrUpdateLocation(_ sender: UIButton) {
-        print("=D")
+        // TODO: Send the post or put request.
         navigationController?.popToRootViewController(animated: true)
     }
 }

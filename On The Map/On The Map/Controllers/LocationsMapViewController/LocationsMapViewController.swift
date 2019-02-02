@@ -33,7 +33,10 @@ class LocationsMapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         mapView.delegate = self
+        mapView.showsUserLocation = true
+        mapView.setUserTrackingMode(.followWithHeading, animated: true)
     }
 
     // MARK: Imperatives
