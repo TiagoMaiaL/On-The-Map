@@ -65,4 +65,51 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
             handler(locations, nil)
         }
     }
+
+    func createStudentLocation(
+        _ information: StudentInformation,
+        withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+        ) {
+        guard let jsonData = getJsonRepresentation(ofStudentInformation: information) else {
+            assertionFailure("Couldn't get the student information json body data.")
+            handler(nil, APIClient.RequestError.malformedJsonBody)
+            return
+        }
+
+        _ = getConfiguredTaskForPOST(
+            withAbsolutePath: baseURL.appendingPathComponent(Methods.StudentLocation).absoluteString,
+            parameters: [:],
+            jsonBody: jsonData
+        ) { json, error in
+            guard error == nil, json != nil else {
+                handler(nil, error!)
+                return
+            }
+
+            handler(information, nil)
+        }
+    }
+
+    func updateStudentLocation(
+        _ information: StudentInformation,
+        withCompletionHandler handler: (StudentInformation?, APIClient.RequestError?) -> Void
+        ) {
+
+    }
+
+    /// Gets a json string from the passed student information.
+    /// - Parameter studentInformation: the information used to create the json string.
+    /// - Returns: the information as a json data.
+    private func getJsonRepresentation(ofStudentInformation studentInformation: StudentInformation) -> Data? {
+        let jsonDictionary: [String: Any] = [
+            JSONResponseKeys.FirstName: studentInformation.firstName,
+            JSONResponseKeys.LastName: studentInformation.lastName,
+            JSONResponseKeys.MapTextReference: studentInformation.mapTextReference,
+            JSONResponseKeys.Latitude: studentInformation.latitude,
+            JSONResponseKeys.Longitude: studentInformation.longitude,
+            JSONResponseKeys.MediaUrl: studentInformation.mediaUrl.absoluteString,
+            JSONResponseKeys.InformationKey: studentInformation.key
+        ]
+        return try? JSONSerialization.data(withJSONObject: jsonDictionary, options: .prettyPrinted)
+    }
 }

@@ -26,6 +26,7 @@ class APIClient {
         case response(statusCode: Int?)
         case lackingData
         case malformedJson
+        case malformedJsonBody
     }
 
     /// The HTTP methods used by the API client.
@@ -78,13 +79,13 @@ class APIClient {
     /// - Parameters:
     ///     - path: The path of the desired resource.
     ///     - parameters: The parameters to be sent with the request.
-    ///     - jsonBody: The body json parameters to be sent with the request.
+    ///     - jsonBody: The json data parameters to be sent with the request.
     ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     func getConfiguredTaskForPOST(
         withAbsolutePath path: String,
         parameters: [String: String],
-        jsonBody: String,
+        jsonBody: Data,
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
@@ -146,7 +147,7 @@ class APIClient {
         forHTTPMethod method: HTTPMethod,
         path: String,
         parameters: [String: String],
-        jsonBody: String?,
+        jsonBody: Data?,
         withCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void,
         andUsingRequestConfigurer requestConfigurer: RequestConfigurer? = nil
         ) -> URLSessionDataTask? {
@@ -174,7 +175,7 @@ class APIClient {
         switch method {
         case .post:
             if let jsonBody = jsonBody {
-                request.httpBody = jsonBody.data(using: .utf8)
+                request.httpBody = jsonBody
             }
         default:
             break

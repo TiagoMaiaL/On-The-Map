@@ -48,7 +48,7 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
         password: String,
         andCompletionHandler handler: @escaping (Account?, Session?, APIClient.RequestError?) -> Void
         ) {
-        let body = """
+        let bodyText = """
         {
             "udacity": {
                 "username": "\(username)",
@@ -56,6 +56,11 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
             }
         }
 """
+        guard let body = bodyText.data(using: .utf8) else {
+            assertionFailure("Couldn't get the data out of the body text.")
+            handler(nil, nil, APIClient.RequestError.malformedJsonBody)
+            return
+        }
 
         _ = getConfiguredTaskForPOST(
             withAbsolutePath: baseURL.appendingPathComponent(Methods.Session).absoluteString,

@@ -31,5 +31,20 @@ protocol ParseAPIClientProtocol {
     )
 
     /// Creates a student location using the passed data.
-    
+    /// - Parameters:
+    ///     - information: The information struct containing the location.
+    ///     - completionHandler: The handler called with the result of the call.
+    func createStudentLocation(
+        _ information: StudentInformation,
+        withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+    )
+
+    /// Updates a student location using the passed data.
+    /// - Parameters:
+    ///     - information: The information struct containing the location.
+    ///     - completionHandler: The handler called with the result of the call.
+    func updateStudentLocation(
+        _ information: StudentInformation,
+        withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+    )
 }

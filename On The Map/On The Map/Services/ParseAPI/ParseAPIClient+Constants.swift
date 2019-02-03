@@ -37,6 +37,6 @@ extension ParseAPIClient {
         static let Longitude = "longitude"
         static let MapTextReference = "mapString"
         static let MediaUrl = "mediaURL"
-        static let InformationKey = "key"
+        static let InformationKey = "uniqueKey"
     }
 }
