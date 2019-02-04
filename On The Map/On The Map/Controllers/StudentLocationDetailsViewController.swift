@@ -29,6 +29,16 @@ class StudentLocationDetailsViewController: UIViewController {
     /// The placemark searched by the user.
     var placemark: MKPlacemark!
 
+    /// The student information to be posted to the server.
+    private lazy var studentInformationToPost = {
+        return makeStudentInformation(
+            loggedUser: loggedUser,
+            locationText: locationText,
+            placemark: placemark,
+            linkText: linkText
+        )
+    }()
+
     /// The map displaying the chosen location.
     @IBOutlet weak var mapView: MKMapView!
 
@@ -67,7 +77,55 @@ class StudentLocationDetailsViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func createOrUpdateLocation(_ sender: UIButton) {
-        // TODO: Send the post or put request.
-        navigationController?.popToRootViewController(animated: true)
+        parseClient.createStudentLocation(studentInformationToPost) { information, error in
+            guard error == nil, let information = information else {
+                DispatchQueue.main.async {
+                    self.displayError(
+                        "There was an error while sending the student information to the server, please, try again."
+                    )
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+//                NotificationCenter.default.post(name: NSNotification.Name(""), object: self, userInfo: [:])
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+        }
+    }
+
+    // MARK: Imperatives
+
+    /// Creates and configures the student information struct from the passed data.
+    /// - Parameters:
+    ///     - loggedUser: the currently logged user.
+    ///     - locationText: the text location text.
+    ///     - placemark: the placemark associated with the searched location.
+    ///     - linkText: the link to be posted.
+    private func makeStudentInformation(
+        loggedUser: User,
+        locationText: String,
+        placemark: MKPlacemark,
+        linkText: String
+        ) -> StudentInformation {
+        return StudentInformation(
+            firstName: loggedUser.firstName,
+            lastName: loggedUser.lastName,
+            latitude: placemark.coordinate.latitude,
+            longitude: placemark.coordinate.longitude, mapTextReference: locationText,
+            mediaUrl: URL(string: linkText)!,
+            key: loggedUser.key
+        )
+    }
+
+    /// Displays the an error to the user.
+    /// - Parameter error: the error
+    private func displayError(_ errorMessage: String) {
+        let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            alert.dismiss(animated: true)
+        }))
+
+        present(alert, animated: true)
     }
 }

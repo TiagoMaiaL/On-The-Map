@@ -36,6 +36,23 @@ struct StudentInformation {
 
     // MARK: Initializers
 
+    init(firstName: String,
+         lastName: String,
+         latitude: Double,
+         longitude: Double,
+         mapTextReference: String,
+         mediaUrl: URL,
+         key: String
+        ) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.latitude = latitude
+        self.longitude = longitude
+        self.mapTextReference = mapTextReference
+        self.mediaUrl = mediaUrl
+        self.key = key
+    }
+
     init?(informationData: [String: AnyObject]) {
         guard let firstName = informationData[ParseAPIClient.JSONResponseKeys.FirstName] as? String else {
             return nil
