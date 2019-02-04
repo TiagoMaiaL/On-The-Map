@@ -26,6 +26,7 @@ extension ParseAPIClient {
     enum ParameterKeys {
         static let Limit = "limit"
         static let Page = "skip"
+        static let WhereQuery = "where"
     }
 
     /// The keys of the json returned in the responses.

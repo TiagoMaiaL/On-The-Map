@@ -66,6 +66,36 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
         }
     }
 
+    /// Fetches the specific student location by the uniqueKey.
+    /// - Parameters:
+    ///     - uniqueKey: the unique key of the student information to be fetched.
+    ///     - handler: the closure called when the request finishes, with the found value, or an error.
+    func fetchStudentLocation(
+        byUsingUniqueKey key: String,
+        andCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+        ) {
+        let fetchUrl = baseURL.appendingPathComponent(Methods.StudentLocation)
+        let parameters = [ParameterKeys.WhereQuery: "{\"\(JSONResponseKeys.InformationKey)\" : \"\(key)\"}"]
+        _ = getConfiguredTaskForGET(withAbsolutePath: fetchUrl.absoluteString, parameters: parameters)  { json, error in
+            guard error == nil, let json = json else {
+                handler(nil, error!)
+                return
+            }
+
+            guard let results = json[JSONResponseKeys.Results] as? [[String: AnyObject]], !results.isEmpty else {
+                handler(nil, APIClient.RequestError.malformedJson)
+                return
+            }
+
+            guard let fetchedInformation = StudentInformation(informationData: results.first!) else {
+                handler(nil, APIClient.RequestError.malformedJson)
+                return
+            }
+
+            handler(fetchedInformation, nil)
+        }
+    }
+
     func createStudentLocation(
         _ information: StudentInformation,
         withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void

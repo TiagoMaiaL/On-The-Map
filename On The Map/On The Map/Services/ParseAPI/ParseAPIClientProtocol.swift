@@ -30,6 +30,15 @@ protocol ParseAPIClientProtocol {
         andUsingCompletionHandler handler: @escaping ([StudentInformation]?, APIClient.RequestError?) -> Void
     )
 
+    /// Fetches the specific student location by the uniqueKey.
+    /// - Parameters:
+    ///     - uniqueKey: the unique key of the student information to be fetched.
+    ///     - handler: the closure called when the request finishes, with the found value, or an error.
+    func fetchStudentLocation(
+        byUsingUniqueKey key: String,
+        andCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+    )
+
     /// Creates a student location using the passed data.
     /// - Parameters:
     ///     - information: The information struct containing the location.
