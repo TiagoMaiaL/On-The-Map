@@ -25,6 +25,17 @@ class LocationsTableViewController: UITableViewController {
         }
     }
 
+    /// The currently logged user.
+    var loggedUser: User!
+
+    // MARK: Life cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        precondition(loggedUser != nil)
+    }
+
     // MARK: Table view data source methods
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -41,6 +52,12 @@ class LocationsTableViewController: UITableViewController {
         guard let currentLocation = locations?[indexPath.row] else {
             assertionFailure("The location must be successfully retrieved.")
             return cell
+        }
+
+        if currentLocation.key == loggedUser.key {
+            cell.backgroundColor = .red
+        } else {
+            cell.backgroundColor = .white
         }
 
         cell.textLabel?.text = "\(currentLocation.firstName) \(currentLocation.lastName)"

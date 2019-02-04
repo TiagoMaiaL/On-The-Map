@@ -26,6 +26,9 @@ class LocationsMapViewController: UIViewController {
         }
     }
 
+    /// The currently logged user.
+    var loggedUser: User!
+
     /// The map displaying each location of each student.
     @IBOutlet weak var mapView: MKMapView!
 
@@ -33,6 +36,8 @@ class LocationsMapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        precondition(loggedUser != nil)
 
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -49,7 +54,8 @@ class LocationsMapViewController: UIViewController {
             StudentAnnotation(
                 coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude),
                 title: "\($0.firstName) \($0.lastName)",
-                subtitle: $0.mediaUrl.absoluteString
+                subtitle: $0.mediaUrl.absoluteString,
+                studentInformation: $0
             )
         })
     }
@@ -82,6 +88,14 @@ extension LocationsMapViewController: MKMapViewDelegate {
                 annotation: annotation,
                 reuseIdentifier: annotationViewReuseIdentifier
             )
+        }
+
+        if let studentAnnotation = annotation as? StudentAnnotation {
+            if studentAnnotation.studentInformation.key == loggedUser.key {
+                annotationView.pinTintColor = .green
+            } else {
+                annotationView.pinTintColor = .red
+            }
         }
 
         annotationView.canShowCallout = true
@@ -117,6 +131,9 @@ private class StudentAnnotation: NSObject, MKAnnotation {
 
     // MARK: Properties
 
+    /// The associated student information.
+    var studentInformation: StudentInformation
+
     /// The 2D coordinate of the annotation.
     var coordinate: CLLocationCoordinate2D
 
@@ -128,8 +145,9 @@ private class StudentAnnotation: NSObject, MKAnnotation {
 
     // MARK: Initializers
 
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, studentInformation: StudentInformation) {
         self.coordinate = coordinate
+        self.studentInformation = studentInformation
 
         // TODO: Why does the init have to be called after?
         super.init()

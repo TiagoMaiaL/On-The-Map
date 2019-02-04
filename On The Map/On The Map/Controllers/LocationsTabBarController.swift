@@ -25,6 +25,9 @@ class LocationsTabBarController: UITabBarController {
     /// The logged User information used to post a new location.
     var loggedUser: User!
 
+    /// The student information of the currently logged user.
+    var loggedUserStudentInformation: StudentInformation?
+
     // MARK: Imperatives
 
     override func viewDidLoad() {
@@ -34,6 +37,14 @@ class LocationsTabBarController: UITabBarController {
         precondition(udacityClient != nil)
         precondition(parseClient != nil)
         precondition(loggedUser != nil)
+
+        guard let mapsViewController = viewControllers!.first as? LocationsMapViewController,
+            let tableViewController = viewControllers!.last as? LocationsTableViewController else {
+                preconditionFailure("Couldn't correclty get the child view controllers.")
+        }
+
+        mapsViewController.loggedUser = loggedUser
+        tableViewController.loggedUser = loggedUser
 
         delegate = self
     }
@@ -65,30 +76,56 @@ class LocationsTabBarController: UITabBarController {
         sender?.isEnabled = false
 
         parseClient.fetchStudentLocations(withLimit: 100, skippingPages: 0) { locations, error in
-            guard error == nil else {
+
+            /// Updates the handled controllers to show the passed student locations.
+            /// - Parameter locations: the fetched student locations.
+            func displayStudentLocations(_ locations: [StudentInformation]) {
                 DispatchQueue.main.async {
-                    self.displayError(
-                        error!,
-                        withMessage: """
-There was an error while downloading the students' locations, please, contact the app developer.
-"""
-                    )
+                    guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
+                        let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
+                            assertionFailure("Couldn't get the controllers.")
+                            return
+                    }
+
+                    mapController.locations = locations
+                    tableViewController.locations = locations
+
                     sender?.isEnabled = true
                 }
+            }
+
+            let errorMessage = """
+There was an error while downloading the students' locations, please, contact the app developer.
+"""
+
+            guard var locations = locations, error == nil else {
+                DispatchQueue.main.async {
+                    self.displayError(error ?? .malformedJson, withMessage: errorMessage)
+                }
+                sender?.isEnabled = true
                 return
             }
 
-            DispatchQueue.main.async {
-                guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
-                    let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
-                        assertionFailure("Couldn't get the controllers.")
-                        return
+            if let loggedUserInformation = self.loggedUserStudentInformation ??
+                locations.filter({ $0.key == self.loggedUser.key }).first {
+                // Try to search for the logged user's location, if one wasn't already set.
+                if let index = locations.firstIndex(of: loggedUserInformation) {
+                    locations.insert(locations.remove(at: index), at: 0)
+                } else {
+                    locations.insert(loggedUserInformation, at: 0)
                 }
 
-                mapController.locations = locations
-                tableViewController.locations = locations
+                displayStudentLocations(locations)
+            } else {
+                // Otherwise, try to fetch it, and if successful, display it.
+                _ = self.parseClient.fetchStudentLocation(byUsingUniqueKey: self.loggedUser.key) { information, _ in
+                    if information != nil {
+                        self.loggedUserStudentInformation = information
+                        locations.insert(information!, at: 0)
+                    }
 
-                sender?.isEnabled = true
+                    displayStudentLocations(locations)
+                }
             }
         }
     }

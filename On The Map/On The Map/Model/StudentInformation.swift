@@ -9,7 +9,7 @@
 import Foundation
 
 /// A struct representing the information posted by the student.
-struct StudentInformation {
+struct StudentInformation: Hashable {
 
     // MARK: Properties
 
