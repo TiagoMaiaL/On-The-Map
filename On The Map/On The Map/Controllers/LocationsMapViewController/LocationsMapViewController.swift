@@ -50,6 +50,7 @@ class LocationsMapViewController: UIViewController {
     /// - Parameters:
     ///     - locations: the locations to be displayed on the map.
     private func displayLocations(_ locations: [StudentInformation]) {
+        mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(locations.compactMap {
             StudentAnnotation(
                 coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude),

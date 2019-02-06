@@ -34,6 +34,9 @@ struct StudentInformation: Hashable {
     /// The information key.
     let key: String
 
+    /// The parse id of the object.
+    var objectID: String?
+
     // MARK: Initializers
 
     init(firstName: String,
@@ -83,6 +86,10 @@ struct StudentInformation: Hashable {
             return nil
         }
 
+        guard let objectID = informationData[ParseAPIClient.JSONResponseKeys.ObjectID] as? String else {
+            return nil
+        }
+
         self.firstName = firstName
         self.lastName = lastName
         self.latitude = latitude
@@ -90,5 +97,6 @@ struct StudentInformation: Hashable {
         self.mapTextReference = mapTextReference
         self.mediaUrl = mediaUrl
         self.key = key
+        self.objectID = objectID
     }
 }

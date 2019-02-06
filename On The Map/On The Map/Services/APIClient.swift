@@ -30,9 +30,10 @@ class APIClient {
     }
 
     /// The HTTP methods used by the API client.
-    private enum HTTPMethod: String {
+    enum HTTPMethod: String {
         case get = "GET"
         case post = "POST"
+        case put = "PUT"
         case delete = "DELETE"
     }
 
@@ -64,15 +65,13 @@ class APIClient {
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
-        let task = getConfiguredDataTask(
+        return getConfiguredDataTask(
             forHTTPMethod: .get,
             path: path,
             parameters: parameters,
             jsonBody: nil,
             withCompletionHandler: handler
         )
-
-        return task
     }
 
     /// Returns a resumed data task to access a resource using the POST HTTP method.
@@ -89,15 +88,36 @@ class APIClient {
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
-        let task = getConfiguredDataTask(
+        return getConfiguredDataTask(
             forHTTPMethod: .post,
             path: path,
             parameters: parameters,
             jsonBody: jsonBody,
             withCompletionHandler: handler
         )
+    }
 
-        return task
+    /// Returns a resumed data task to access a resource using the PUT HTTP method.
+    /// - Parameters:
+    ///     - path: The path of the desired resource.
+    ///     - parameters: The parameters to be sent with the request.
+    ///     - jsonBody: The json data parameters to be sent with the request.
+    ///     - completionHandler: The completion handler called when the task finishes loading or there's an error.
+    /// - Returns: The configured and resumed data task associated with the passed arguments.
+    func getConfiguredTaskForPUT(
+        withAbsolutePath path: String,
+        parameters: [String: String],
+        jsonBody: Data,
+        andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
+        ) -> URLSessionDataTask? {
+
+        return getConfiguredDataTask(
+            forHTTPMethod: .put,
+            path: path,
+            parameters: parameters,
+            jsonBody: jsonBody,
+            withCompletionHandler: handler
+        )
     }
 
     /// Returns a resumed data task to delete a resource using the DELETE HTTP method.
@@ -112,7 +132,7 @@ class APIClient {
         andCompletionHandler handler: @escaping (DeserializedJson?, RequestError?) -> Void
         ) -> URLSessionDataTask? {
 
-        let task = getConfiguredDataTask(
+        return getConfiguredDataTask(
             forHTTPMethod: .delete,
             path: path,
             parameters: parameters,
@@ -129,8 +149,6 @@ class APIClient {
                 return urlRequest
             }
         )
-
-        return task
     }
 
     /// Makes a data task configured for the specific HTTP method and passed parameters.
@@ -173,7 +191,7 @@ class APIClient {
         }
 
         switch method {
-        case .post:
+        case .post, .put:
             if let jsonBody = jsonBody {
                 request.httpBody = jsonBody
             }

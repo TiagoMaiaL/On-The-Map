@@ -38,6 +38,9 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     /// The placemark searched by the user.
     private var searchedPlacemark: MKPlacemark?
 
+    /// The location posted by the current user, if existent.
+    var loggedUserStudentInformation: StudentInformation?
+
     // MARK: Life cycle
 
     override func viewDidLoad() {
@@ -45,6 +48,11 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
 
         precondition(loggedUser != nil)
         precondition(parseClient != nil)
+
+        if let userInformation = loggedUserStudentInformation {
+            locationTextField.text = userInformation.mapTextReference
+            linkTextField.text = userInformation.mediaUrl.absoluteString
+        }
 
         locationTextField.delegate = self
         linkTextField.delegate = self
@@ -67,6 +75,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             detailsController.locationText = locationText
             detailsController.linkText = linkText
             detailsController.placemark = searchedPlacemark
+            detailsController.loggedUserStudentInformation = loggedUserStudentInformation
         }
     }
 

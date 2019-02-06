@@ -100,17 +100,33 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
         _ information: StudentInformation,
         withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
         ) {
+        manageCurrentUserStudentLocation(information, usingMethod: .post, andCompletionHandler: handler)
+    }
+
+    func updateStudentLocation(
+        _ information: StudentInformation,
+        withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+        ) {
+        manageCurrentUserStudentLocation(information, usingMethod: .put, andCompletionHandler: handler)
+    }
+
+    /// Requests the creation or update of the student location managed by the logged user.
+    /// - Parameters:
+    ///     - information: the student information to be managed.
+    ///     - method: the HTTP method to be used (to update or create the resource).
+    ///     - handler: the completion handler of the request.
+    private func manageCurrentUserStudentLocation(
+        _ information: StudentInformation,
+        usingMethod method: APIClient.HTTPMethod,
+        andCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
+        ) {
         guard let jsonData = getJsonRepresentation(ofStudentInformation: information) else {
             assertionFailure("Couldn't get the student information json body data.")
             handler(nil, APIClient.RequestError.malformedJsonBody)
             return
         }
 
-        _ = getConfiguredTaskForPOST(
-            withAbsolutePath: baseURL.appendingPathComponent(Methods.StudentLocation).absoluteString,
-            parameters: [:],
-            jsonBody: jsonData
-        ) { json, error in
+        let requestCompletionHandler: (DeserializedJson?, APIClient.RequestError?) -> Void = { json, error in
             guard error == nil, json != nil else {
                 handler(nil, error!)
                 return
@@ -118,13 +134,24 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
 
             handler(information, nil)
         }
-    }
 
-    func updateStudentLocation(
-        _ information: StudentInformation,
-        withCompletionHandler handler: (StudentInformation?, APIClient.RequestError?) -> Void
-        ) {
+        var urlString = baseURL.appendingPathComponent(Methods.StudentLocation).absoluteString
+        if method == .put {
+            guard let objectID = information.objectID else {
+                assertionFailure("Couldn't get the object identifier of the information.")
+                handler(nil, APIClient.RequestError.lackingData)
+                return
+            }
 
+            urlString += "/\(objectID)"
+        }
+
+        _ = (method == .post ? getConfiguredTaskForPOST : getConfiguredTaskForPUT)(
+            urlString,
+            [:],
+            jsonData,
+            requestCompletionHandler
+        )
     }
 
     /// Gets a json string from the passed student information.

@@ -70,6 +70,7 @@ class LocationsTabBarController: UITabBarController {
             if let addLocationController = segue.destination as? AddLocationViewController {
                 addLocationController.loggedUser = loggedUser
                 addLocationController.parseClient = parseClient
+                addLocationController.loggedUserStudentInformation = loggedUserStudentInformation
 
                 if let mapController = viewControllers?.first as? LocationsMapViewController {
                     addLocationController.userLocation = mapController.mapView.userLocation
@@ -115,6 +116,7 @@ There was an error while downloading the students' locations, please, contact th
                     locations.insert(loggedUserInformation, at: 0)
                 }
 
+                self.loggedUserStudentInformation = loggedUserInformation
                 showFetchedLocationsOnMainThread(locations)
             } else {
                 // Otherwise, try to fetch it, and if successful, display it.
@@ -190,7 +192,14 @@ There was an error while downloading the students' locations, please, contact th
                 preconditionFailure("Coulnd't get the created student information from the notification.")
         }
 
+        self.loggedUserStudentInformation = createdInformation
+
         var locations = mapsController.locations ?? []
+
+        // Check if the location already exists. If so, remove it.
+        locations.removeAll {
+            $0.key == createdInformation.key && $0.objectID == createdInformation.objectID
+        }
         locations.insert(createdInformation, at: 0)
         displayStudentLocations(locations)
     }

@@ -39,6 +39,7 @@ extension ParseAPIClient {
         static let MapTextReference = "mapString"
         static let MediaUrl = "mediaURL"
         static let InformationKey = "uniqueKey"
+        static let ObjectID = "objectId"
     }
 
     /// The keys of the user info that comes with the notifications sent in the notification center.

@@ -29,14 +29,23 @@ class StudentLocationDetailsViewController: UIViewController {
     /// The placemark searched by the user.
     var placemark: MKPlacemark!
 
+    /// The location posted by the current user, if existent.
+    var loggedUserStudentInformation: StudentInformation?
+
     /// The student information to be posted to the server.
-    private lazy var studentInformationToPost = {
-        return makeStudentInformation(
+    private lazy var studentInformationToPost: StudentInformation = {
+        var studentInformation = makeStudentInformation(
             loggedUser: loggedUser,
             locationText: locationText,
             placemark: placemark,
             linkText: linkText
         )
+
+        if loggedUserStudentInformation != nil {
+            studentInformation.objectID = loggedUserStudentInformation?.objectID
+        }
+
+        return studentInformation
     }()
 
     /// The map displaying the chosen location.
@@ -77,7 +86,7 @@ class StudentLocationDetailsViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func createOrUpdateLocation(_ sender: UIButton) {
-        parseClient.createStudentLocation(studentInformationToPost) { information, error in
+        let completionHandler: (StudentInformation?, APIClient.RequestError?) -> Void = { information, error in
             guard error == nil, let information = information else {
                 DispatchQueue.main.async {
                     self.displayError(
@@ -96,6 +105,11 @@ class StudentLocationDetailsViewController: UIViewController {
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }
+
+        // Update or create the informed location values.
+        (loggedUserStudentInformation != nil ?
+            parseClient.updateStudentLocation :
+            parseClient.createStudentLocation)(studentInformationToPost, completionHandler)
     }
 
     // MARK: Imperatives
@@ -117,7 +131,7 @@ class StudentLocationDetailsViewController: UIViewController {
             lastName: loggedUser.lastName,
             latitude: placemark.coordinate.latitude,
             longitude: placemark.coordinate.longitude, mapTextReference: locationText,
-            mediaUrl: URL(string: linkText)!,
+            mediaUrl: URL(string: linkText.replacingOccurrences(of: " ", with: "+"))!,
             key: loggedUser.key
         )
     }
