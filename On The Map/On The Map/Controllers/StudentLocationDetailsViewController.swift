@@ -88,7 +88,11 @@ class StudentLocationDetailsViewController: UIViewController {
             }
 
             DispatchQueue.main.async {
-//                NotificationCenter.default.post(name: NSNotification.Name(""), object: self, userInfo: [:])
+                NotificationCenter.default.post(
+                    name: NSNotification.Name.StudentInformationCreated,
+                    object: self,
+                    userInfo: [ParseAPIClient.UserInfoKeys.CreatedStudentInformation: information]
+                )
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }

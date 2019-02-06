@@ -40,4 +40,13 @@ extension ParseAPIClient {
         static let MediaUrl = "mediaURL"
         static let InformationKey = "uniqueKey"
     }
+
+    /// The keys of the user info that comes with the notifications sent in the notification center.
+    enum UserInfoKeys {
+        static let CreatedStudentInformation = "created_information"
+    }
+}
+
+extension NSNotification.Name {
+    static let StudentInformationCreated = NSNotification.Name("student_notification_created")
 }

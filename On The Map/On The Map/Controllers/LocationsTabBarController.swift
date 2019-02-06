@@ -30,6 +30,10 @@ class LocationsTabBarController: UITabBarController {
 
     // MARK: Imperatives
 
+    deinit {
+        unsubscribeFromAllNotifications()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,6 +51,11 @@ class LocationsTabBarController: UITabBarController {
         tableViewController.loggedUser = loggedUser
 
         delegate = self
+
+        subscribeToNotification(
+            named: Notification.Name.StudentInformationCreated,
+            usingSelector: #selector(displayCreatedLocation(usingNotification:))
+        )
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -75,25 +84,16 @@ class LocationsTabBarController: UITabBarController {
     @IBAction func loadLocations(_ sender: UIBarButtonItem? = nil) {
         sender?.isEnabled = false
 
-        parseClient.fetchStudentLocations(withLimit: 100, skippingPages: 0) { locations, error in
-
-            /// Updates the handled controllers to show the passed student locations.
-            /// - Parameter locations: the fetched student locations.
-            func displayStudentLocations(_ locations: [StudentInformation]) {
-                DispatchQueue.main.async {
-                    guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
-                        let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
-                            assertionFailure("Couldn't get the controllers.")
-                            return
-                    }
-
-                    mapController.locations = locations
-                    tableViewController.locations = locations
-
-                    sender?.isEnabled = true
-                }
+        /// Shows the fetched locations on the main thread.
+        /// - Parameter locations: the fetched locations.
+        func showFetchedLocationsOnMainThread(_ locations: [StudentInformation]) {
+            DispatchQueue.main.async {
+                sender?.isEnabled = true
+                self.displayStudentLocations(locations)
             }
+        }
 
+        parseClient.fetchStudentLocations(withLimit: 100, skippingPages: 0) { locations, error in
             let errorMessage = """
 There was an error while downloading the students' locations, please, contact the app developer.
 """
@@ -101,8 +101,8 @@ There was an error while downloading the students' locations, please, contact th
             guard var locations = locations, error == nil else {
                 DispatchQueue.main.async {
                     self.displayError(error ?? .malformedJson, withMessage: errorMessage)
+                    sender?.isEnabled = true
                 }
-                sender?.isEnabled = true
                 return
             }
 
@@ -115,7 +115,7 @@ There was an error while downloading the students' locations, please, contact th
                     locations.insert(loggedUserInformation, at: 0)
                 }
 
-                displayStudentLocations(locations)
+                showFetchedLocationsOnMainThread(locations)
             } else {
                 // Otherwise, try to fetch it, and if successful, display it.
                 _ = self.parseClient.fetchStudentLocation(byUsingUniqueKey: self.loggedUser.key) { information, _ in
@@ -124,7 +124,7 @@ There was an error while downloading the students' locations, please, contact th
                         locations.insert(information!, at: 0)
                     }
 
-                    displayStudentLocations(locations)
+                    showFetchedLocationsOnMainThread(locations)
                 }
             }
         }
@@ -174,6 +174,38 @@ There was an error while downloading the students' locations, please, contact th
 
         alert.message = alertMessage
         present(alert, animated: true)
+    }
+
+    // MARK: Notifications
+
+    /// Receives the created student location and updates the map and table views with it.
+    /// - Parameter notification: the sent notification.
+    @objc private func displayCreatedLocation(usingNotification notification: NSNotification) {
+        guard let mapsController = viewControllers?.first as? LocationsMapViewController else {
+            preconditionFailure("Couldn't get the map view controller.")
+        }
+
+        guard let createdInformation =
+            notification.userInfo?[ParseAPIClient.UserInfoKeys.CreatedStudentInformation] as? StudentInformation else {
+                preconditionFailure("Coulnd't get the created student information from the notification.")
+        }
+
+        var locations = mapsController.locations ?? []
+        locations.insert(createdInformation, at: 0)
+        displayStudentLocations(locations)
+    }
+
+    /// Updates the handled controllers to display the passed student locations.
+    /// - Parameter locations: the fetched student locations.
+    private func displayStudentLocations(_ locations: [StudentInformation]) {
+        guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
+            let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
+                assertionFailure("Couldn't get the controllers.")
+                return
+        }
+
+        mapController.locations = locations
+        tableViewController.locations = locations
     }
 }
 
