@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		479C310D220B542B00273EB1 /* UIViewController+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C310C220B542B00273EB1 /* UIViewController+Constants.swift */; };
 		47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF952021F9E78E006A112B /* AppDelegate.swift */; };
 		47AF952621F9E78E006A112B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47AF952421F9E78E006A112B /* Main.storyboard */; };
 		47AF952821F9E791006A112B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47AF952721F9E791006A112B /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		479C310C220B542B00273EB1 /* UIViewController+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Constants.swift"; sourceTree = "<group>"; };
 		47AF951D21F9E78E006A112B /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47AF952021F9E78E006A112B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47AF952521F9E78E006A112B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		47AF953321F9E823006A112B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				479C310C220B542B00273EB1 /* UIViewController+Constants.swift */,
 				47AF953721FA14EA006A112B /* LoginViewController.swift */,
 				47B990FF21FF51D900761C86 /* ControllerConstants.swift */,
 				47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */,
@@ -272,6 +275,7 @@
 				47B990F821FB912000761C86 /* Session.swift in Sources */,
 				47B9910921FFAB5000761C86 /* ParseAPIClient+Constants.swift in Sources */,
 				47B9910321FFA84E00761C86 /* ParseAPIClientProtocol.swift in Sources */,
+				479C310D220B542B00273EB1 /* UIViewController+Constants.swift in Sources */,
 				47AF953821FA14EA006A112B /* LoginViewController.swift in Sources */,
 				47B9910B2200B3E100761C86 /* LocationsTabBarController.swift in Sources */,
 				47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */,

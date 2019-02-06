@@ -92,7 +92,7 @@ extension LocationsMapViewController: MKMapViewDelegate {
 
         if let studentAnnotation = annotation as? StudentAnnotation {
             if studentAnnotation.studentInformation.key == loggedUser.key {
-                annotationView.pinTintColor = .green
+                annotationView.pinTintColor = Colors.UserLocationMarkerColor
             } else {
                 annotationView.pinTintColor = .red
             }

@@ -55,7 +55,7 @@ class LocationsTableViewController: UITableViewController {
         }
 
         if currentLocation.key == loggedUser.key {
-            cell.backgroundColor = .red
+            cell.backgroundColor = Colors.UserLocationCellColor
         } else {
             cell.backgroundColor = .white
         }
