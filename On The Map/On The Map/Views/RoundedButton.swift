@@ -11,6 +11,16 @@ import UIKit
 /// A button with rounded borders.
 @IBDesignable class RoundedButton: UIButton {
 
+    // MARK: Properties
+
+    override var isEnabled: Bool {
+        didSet {
+            UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+                self.alpha = self.isEnabled ? 1 : 0.5
+            }.startAnimation()
+        }
+    }
+
     // MARK: Life cycle
 
     override func prepareForInterfaceBuilder() {

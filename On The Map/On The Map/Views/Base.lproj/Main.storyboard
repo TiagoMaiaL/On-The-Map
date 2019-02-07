@@ -214,25 +214,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="lQ0-2b-wgk">
-                                <rect key="frame" x="28" y="258.5" width="319" height="150"/>
+                                <rect key="frame" x="28" y="84" width="319" height="265"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_world" translatesAutoresizingMaskIntoConstraints="NO" id="TgV-Pv-do5">
+                                        <rect key="frame" x="109.5" y="0.0" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="iSO-Gs-xwl"/>
+                                            <constraint firstAttribute="width" secondItem="TgV-Pv-do5" secondAttribute="height" multiplier="1:1" id="weA-rZ-MOr"/>
+                                        </constraints>
+                                    </imageView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qMa-VA-win" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="319" height="40"/>
+                                        <rect key="frame" x="0.0" y="115" width="319" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="vrN-hb-H1V"/>
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="next" textContentType="location"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" textContentType="location"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Link" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lZ9-Wp-V25" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55" width="319" height="40"/>
+                                        <rect key="frame" x="0.0" y="170" width="319" height="40"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" textContentType="url"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="search" textContentType="url"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4h-KD-XnV" customClass="RoundedButton" customModule="On_The_Map" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="110" width="319" height="40"/>
+                                        <rect key="frame" x="0.0" y="225" width="319" height="40"/>
                                         <color key="backgroundColor" red="0.4516992364437013" green="0.78008952254641906" blue="0.43305881131752993" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Find Location">
@@ -254,7 +261,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="lQ0-2b-wgk" firstAttribute="centerX" secondItem="eOk-PP-aku" secondAttribute="centerX" id="8AA-RZ-P3Z"/>
-                            <constraint firstItem="lQ0-2b-wgk" firstAttribute="centerY" secondItem="eOk-PP-aku" secondAttribute="centerY" id="L1b-px-7mA"/>
+                            <constraint firstItem="lQ0-2b-wgk" firstAttribute="top" secondItem="cTD-BQ-ghO" secondAttribute="top" constant="20" id="gvf-eN-mQh"/>
                             <constraint firstItem="qMa-VA-win" firstAttribute="width" secondItem="eOk-PP-aku" secondAttribute="width" multiplier="0.85" id="umG-1j-Jaj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cTD-BQ-ghO"/>
@@ -377,6 +384,7 @@
         <image name="icon_listview-selected" width="75" height="50"/>
         <image name="icon_mapview-selected" width="75" height="50"/>
         <image name="icon_pin" width="24" height="24"/>
+        <image name="icon_world" width="52" height="67"/>
         <image name="logo-u" width="62" height="62"/>
     </resources>
 </document>

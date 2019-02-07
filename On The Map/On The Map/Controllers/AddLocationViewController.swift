@@ -87,6 +87,8 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
+        sender?.isEnabled = false
+
         let mapSearchRequest = MKLocalSearch.Request()
         mapSearchRequest.naturalLanguageQuery = locationText
         if let userLocation = userLocation {
@@ -101,6 +103,8 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
 
         let localSearch = MKLocalSearch(request: mapSearchRequest)
         localSearch.start { response, error in
+            sender?.isEnabled = true
+
             self.findLocationButton.isEnabled = true
 
             guard error == nil, let response = response, !response.mapItems.isEmpty else {
