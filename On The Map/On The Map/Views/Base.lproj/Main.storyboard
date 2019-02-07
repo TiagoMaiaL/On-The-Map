@@ -24,32 +24,37 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PmL-X7-3Bp" userLabel="Content view">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="648"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="xgJ-fe-LLE" userLabel="Contents stack view">
-                                                <rect key="frame" x="56.5" y="242" width="262.5" height="164.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="xgJ-fe-LLE" userLabel="Contents stack view">
+                                                <rect key="frame" x="56.5" y="184" width="262.5" height="280"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with Udacity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cD4-Ia-xWt">
-                                                        <rect key="frame" x="60.5" y="0.0" width="141.5" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-u" translatesAutoresizingMaskIntoConstraints="NO" id="Wfe-SZ-QHt">
+                                                        <rect key="frame" x="81" y="0.0" width="100" height="100"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="Wfe-SZ-QHt" secondAttribute="height" multiplier="1:1" id="O8D-jn-8sG"/>
+                                                            <constraint firstAttribute="width" constant="100" id="z18-sy-spl"/>
+                                                        </constraints>
+                                                    </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="W8T-Sg-AS7">
-                                                        <rect key="frame" x="0.0" y="44.5" width="262.5" height="120"/>
+                                                        <rect key="frame" x="0.0" y="130" width="262.5" height="150"/>
                                                         <subviews>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3G4-3f-LDM">
-                                                                <rect key="frame" x="0.0" y="0.0" width="262.5" height="30"/>
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3G4-3f-LDM" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="262.5" height="40"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="40" id="Rea-dX-4cr"/>
+                                                                </constraints>
                                                                 <nil key="textColor"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="username"/>
                                                             </textField>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lEa-Xp-Oaw">
-                                                                <rect key="frame" x="0.0" y="45" width="262.5" height="30"/>
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lEa-Xp-Oaw" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="55" width="262.5" height="40"/>
                                                                 <nil key="textColor"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzA-CA-VOF">
-                                                                <rect key="frame" x="106.5" y="90" width="49" height="30"/>
+                                                                <rect key="frame" x="0.0" y="110" width="262.5" height="40"/>
                                                                 <state key="normal" title="LOG IN"/>
                                                                 <connections>
                                                                     <action selector="logIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IGe-YM-Efc"/>
@@ -57,13 +62,16 @@
                                                             </button>
                                                         </subviews>
                                                         <constraints>
+                                                            <constraint firstItem="uzA-CA-VOF" firstAttribute="height" secondItem="3G4-3f-LDM" secondAttribute="height" id="40e-JL-GMu"/>
+                                                            <constraint firstItem="lEa-Xp-Oaw" firstAttribute="height" secondItem="3G4-3f-LDM" secondAttribute="height" id="4Ws-78-UPq"/>
+                                                            <constraint firstItem="uzA-CA-VOF" firstAttribute="width" secondItem="3G4-3f-LDM" secondAttribute="width" id="axa-5g-7cF"/>
                                                             <constraint firstItem="lEa-Xp-Oaw" firstAttribute="width" secondItem="3G4-3f-LDM" secondAttribute="width" id="hyk-fE-lwr"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
                                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="T9P-AJ-eAS">
-                                                <rect key="frame" x="169" y="421.5" width="37" height="37"/>
+                                                <rect key="frame" x="169" y="479" width="37" height="37"/>
                                                 <color key="color" red="0.0" green="0.6588235294" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </activityIndicatorView>
                                         </subviews>
@@ -186,7 +194,7 @@
                             <outlet property="delegate" destination="pFa-hk-jMr" id="PEN-On-awM"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Location" image="icon_listview-selected" id="SuP-i9-anN"/>
+                    <tabBarItem key="tabBarItem" title="Listing" image="icon_listview-selected" id="SuP-i9-anN"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1T4-c9-c1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -348,5 +356,6 @@
         <image name="icon_listview-selected" width="75" height="50"/>
         <image name="icon_mapview-selected" width="75" height="50"/>
         <image name="icon_pin" width="24" height="24"/>
+        <image name="logo-u" width="62" height="62"/>
     </resources>
 </document>
