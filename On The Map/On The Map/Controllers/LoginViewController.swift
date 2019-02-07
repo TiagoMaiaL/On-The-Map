@@ -102,7 +102,7 @@ class LoginViewController: UIViewController {
                     alertMessage = "There's a problem with your internet connection, please, fix it and try again."
                 case .response(_):
                     alertMessage = "The username or password you provided isn't correct."
-                    [self.usernameTextField, self.passwordTextField].forEach { $0?.text = "" }
+                    self.passwordTextField.text = ""
                 default:
                     break
                 }
