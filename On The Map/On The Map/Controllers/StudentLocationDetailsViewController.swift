@@ -144,12 +144,19 @@ class StudentLocationDetailsViewController: UIViewController {
         placemark: MKPlacemark,
         linkText: String
         ) -> StudentInformation {
+        guard let urlString = linkText.replacingOccurrences(
+            of: " ",
+            with: "+"
+            ).addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+                preconditionFailure("Couldn't configure the provided url string.")
+        }
+
         return StudentInformation(
             firstName: loggedUser.firstName,
             lastName: loggedUser.lastName,
             latitude: placemark.coordinate.latitude,
             longitude: placemark.coordinate.longitude, mapTextReference: locationText,
-            mediaUrl: URL(string: linkText.replacingOccurrences(of: " ", with: "+"))!,
+            mediaUrl: URL(string: urlString)!,
             key: loggedUser.key
         )
     }

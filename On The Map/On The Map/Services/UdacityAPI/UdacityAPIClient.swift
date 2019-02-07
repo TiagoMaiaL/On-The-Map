@@ -48,54 +48,48 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
         password: String,
         andCompletionHandler handler: @escaping (Account?, Session?, APIClient.RequestError?) -> Void
         ) {
-//        let bodyText = """
-//        {
-//            "udacity": {
-//                "username": "\(username)",
-//                "password": "\(password)"
-//            }
-//        }
-//"""
-//        guard let body = bodyText.data(using: .utf8) else {
-//            assertionFailure("Couldn't get the data out of the body text.")
-//            handler(nil, nil, APIClient.RequestError.malformedJsonBody)
-//            return
-//        }
+        let bodyText = """
+        {
+            "udacity": {
+                "username": "\(username)",
+                "password": "\(password)"
+            }
+        }
+"""
+        guard let body = bodyText.data(using: .utf8) else {
+            assertionFailure("Couldn't get the data out of the body text.")
+            handler(nil, nil, APIClient.RequestError.malformedJsonBody)
+            return
+        }
 
-//        _ = getConfiguredTaskForPOST(
-//            withAbsolutePath: baseURL.appendingPathComponent(Methods.Session).absoluteString,
-//            parameters: [:],
-//            jsonBody: body
-//        ) { json, error in
-//            guard error == nil else {
-//                handler(nil, nil, error)
-//                return
-//            }
-//
-//            let json = json!
-//
-//            guard let accountData = json[JSONResponseKeys.Account] as? [String: AnyObject],
-//                let account = Account(data: accountData) else {
-//                    handler(nil, nil, RequestError.malformedJson)
-//                    return
-//            }
-//
-//            guard let sessionData = json[JSONResponseKeys.Session] as? [String: AnyObject],
-//                let session = Session(data: sessionData) else {
-//                    handler(nil, nil, RequestError.malformedJson)
-//                    return
-//            }
-//
-//            self.userAccount = account
-//            self.userSession = session
-//            handler(account, session, nil)
-//        }
+        _ = getConfiguredTaskForPOST(
+            withAbsolutePath: baseURL.appendingPathComponent(Methods.Session).absoluteString,
+            parameters: [:],
+            jsonBody: body
+        ) { json, error in
+            guard error == nil else {
+                handler(nil, nil, error)
+                return
+            }
 
-        self.userAccount = Account(data: [UdacityAPIClient.JSONResponseKeys.AccountRegistered: true as AnyObject,
-                                          UdacityAPIClient.JSONResponseKeys.AccountKey: "3903878747132" as AnyObject])
-        self.userSession = Session(data: [UdacityAPIClient.JSONResponseKeys.SessionID: "1457628510Sc18f2ad4cd3fb317fb8e028488694088" as AnyObject,
-                                          UdacityAPIClient.JSONResponseKeys.SessionExpiration: "2019-03-10T16:48:30.760460Z" as AnyObject])
-        handler(self.userAccount!, self.userSession!, nil)
+            let json = json!
+
+            guard let accountData = json[JSONResponseKeys.Account] as? [String: AnyObject],
+                let account = Account(data: accountData) else {
+                    handler(nil, nil, RequestError.malformedJson)
+                    return
+            }
+
+            guard let sessionData = json[JSONResponseKeys.Session] as? [String: AnyObject],
+                let session = Session(data: sessionData) else {
+                    handler(nil, nil, RequestError.malformedJson)
+                    return
+            }
+
+            self.userAccount = account
+            self.userSession = session
+            handler(account, session, nil)
+        }
     }
 
     func logOut(withCompletionHandler handler: @escaping (Bool, APIClient.RequestError?) -> Void) {
@@ -120,25 +114,19 @@ final class UdacityAPIClient: APIClient, UdacityAPIClientProtocol {
         andCompletionHandler handler: @escaping (User?, APIClient.RequestError?) -> Void
     ) {
         let url = baseURL.appendingPathComponent(Methods.User.byReplacingKey(URLKeys.UserID, withValue: userID))
-//        _ = getConfiguredTaskForGET(withAbsolutePath: url.absoluteString, parameters: [:]) { json, error in
-//            guard error == nil else {
-//                handler(nil, error!)
-//                return
-//            }
-//
-//            guard let user = User(userData: json!) else {
-//                handler(nil, RequestError.malformedJson)
-//                return
-//            }
-//
-//            self.user = user
-//            handler(user, nil)
-//        }
+        _ = getConfiguredTaskForGET(withAbsolutePath: url.absoluteString, parameters: [:]) { json, error in
+            guard error == nil else {
+                handler(nil, error!)
+                return
+            }
 
-        let user = User(userData: [UdacityAPIClient.JSONResponseKeys.UserFirstName: "Steven" as AnyObject,
-                                   UdacityAPIClient.JSONResponseKeys.UserLastName: "Alfred" as AnyObject,
-                                   UdacityAPIClient.JSONResponseKeys.UserKey: "3903878747" as AnyObject])
-        self.user = user
-        handler(user, nil)
+            guard let user = User(userData: json!) else {
+                handler(nil, RequestError.malformedJson)
+                return
+            }
+
+            self.user = user
+            handler(user, nil)
+        }
     }
 }
