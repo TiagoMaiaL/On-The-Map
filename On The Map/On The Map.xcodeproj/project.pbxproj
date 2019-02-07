@@ -20,7 +20,6 @@
 		47B990FA21FB914900761C86 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990F921FB914900761C86 /* Account.swift */; };
 		47B990FC21FB915700761C86 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FB21FB915700761C86 /* User.swift */; };
 		47B990FE21FDDD8400761C86 /* UdacityAPIClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FD21FDDD8400761C86 /* UdacityAPIClientProtocol.swift */; };
-		47B9910021FF51D900761C86 /* ControllerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B990FF21FF51D900761C86 /* ControllerConstants.swift */; };
 		47B9910321FFA84E00761C86 /* ParseAPIClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910221FFA84E00761C86 /* ParseAPIClientProtocol.swift */; };
 		47B9910521FFA90A00761C86 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910421FFA90A00761C86 /* StudentInformation.swift */; };
 		47B9910721FFAB1100761C86 /* ParseAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B9910621FFAB1100761C86 /* ParseAPIClient.swift */; };
@@ -50,7 +49,6 @@
 		47B990F921FB914900761C86 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		47B990FB21FB915700761C86 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		47B990FD21FDDD8400761C86 /* UdacityAPIClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityAPIClientProtocol.swift; sourceTree = "<group>"; };
-		47B990FF21FF51D900761C86 /* ControllerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConstants.swift; sourceTree = "<group>"; };
 		47B9910221FFA84E00761C86 /* ParseAPIClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseAPIClientProtocol.swift; sourceTree = "<group>"; };
 		47B9910421FFA90A00761C86 /* StudentInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		47B9910621FFAB1100761C86 /* ParseAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseAPIClient.swift; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 			children = (
 				479C310C220B542B00273EB1 /* UIViewController+Constants.swift */,
 				47AF953721FA14EA006A112B /* LoginViewController.swift */,
-				47B990FF21FF51D900761C86 /* ControllerConstants.swift */,
 				47B9910A2200B3E100761C86 /* LocationsTabBarController.swift */,
 				47B991132203529F00761C86 /* LocationsMapViewController */,
 				47B9910E2200BD3100761C86 /* LocationsTableViewController.swift */,
@@ -284,7 +281,6 @@
 				47B990FC21FB915700761C86 /* User.swift in Sources */,
 				47B990FE21FDDD8400761C86 /* UdacityAPIClientProtocol.swift in Sources */,
 				47B990F621FB212900761C86 /* UdacityAPIClient+Constants.swift in Sources */,
-				47B9910021FF51D900761C86 /* ControllerConstants.swift in Sources */,
 				47AF953D21FA270A006A112B /* APIClient.swift in Sources */,
 				47B99115220352CC00761C86 /* AnnotationLinkTapRecognizer.swift in Sources */,
 				47B9911722035ED900761C86 /* AddLocationViewController.swift in Sources */,
