@@ -14,6 +14,9 @@ class StudentLocationDetailsViewController: UIViewController {
 
     // MARK: Parameters
 
+    /// The reuse identifier of the annotation view.
+    private let annotationViewIdentifier = "user annotation"
+
     /// The currently logged in user.
     var loggedUser: User!
 
@@ -54,6 +57,9 @@ class StudentLocationDetailsViewController: UIViewController {
     /// The button to finish creating or loading the locations.
     @IBOutlet weak var finishButton: UIButton!
 
+    /// The tap gesture recognizer added to the selected map annotation view.
+    private var selectedViewTapRecognizer: UITapGestureRecognizer?
+
     // MARK: Life cycle
 
     override func viewDidLoad() {
@@ -64,14 +70,21 @@ class StudentLocationDetailsViewController: UIViewController {
         precondition(locationText != nil)
         precondition(linkText != nil)
         precondition(placemark != nil)
+
+        mapView.delegate = self
+        mapView.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: annotationViewIdentifier)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // Display the map annotation.
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = placemark.coordinate
+        let annotation = StudentAnnotation(
+            coordinate: placemark.coordinate,
+            title: locationText,
+            subtitle: linkText,
+            studentInformation: studentInformationToPost
+        )
         mapView.addAnnotation(annotation)
         mapView.centerCoordinate = annotation.coordinate
         mapView.setRegion(
@@ -112,6 +125,11 @@ class StudentLocationDetailsViewController: UIViewController {
             parseClient.createStudentLocation)(studentInformationToPost, completionHandler)
     }
 
+    /// Called when the details view of the annotation view is tapped. This opens the browser with the specified link.
+    @objc private func openDefaultBrowser(_ sender: UITapGestureRecognizer?) {
+        UIApplication.shared.openDefaultBrowser(accessingAddress: studentInformationToPost.mediaUrl.absoluteString)
+    }
+
     // MARK: Imperatives
 
     /// Creates and configures the student information struct from the passed data.
@@ -145,5 +163,36 @@ class StudentLocationDetailsViewController: UIViewController {
         }))
 
         present(alert, animated: true)
+    }
+}
+
+extension StudentLocationDetailsViewController: MKMapViewDelegate {
+
+    // MARK: Map view delegate
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        var annotationView: MKPinAnnotationView! = mapView.dequeueReusableAnnotationView(
+            withIdentifier: annotationViewIdentifier,
+            for: annotation
+        ) as? MKPinAnnotationView
+
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationViewIdentifier)
+        }
+
+        annotationView.displayPriority = .required
+        annotationView.pinTintColor = Colors.UserLocationMarkerColor
+        annotationView.canShowCallout = true
+
+        return annotationView
+    }
+
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        self.selectedViewTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openDefaultBrowser(_:)))
+        view.addGestureRecognizer(self.selectedViewTapRecognizer!)
+    }
+
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        view.removeGestureRecognizer(self.selectedViewTapRecognizer!)
     }
 }

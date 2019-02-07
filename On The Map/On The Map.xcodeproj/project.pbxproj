@@ -10,6 +10,7 @@
 		479C310D220B542B00273EB1 /* UIViewController+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C310C220B542B00273EB1 /* UIViewController+Constants.swift */; };
 		479C310F220C763F00273EB1 /* UnderlinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C310E220C763F00273EB1 /* UnderlinedTextField.swift */; };
 		479C3111220C792700273EB1 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C3110220C792700273EB1 /* RoundedButton.swift */; };
+		479C3113220C7DD600273EB1 /* StudentAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C3112220C7DD600273EB1 /* StudentAnnotation.swift */; };
 		47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AF952021F9E78E006A112B /* AppDelegate.swift */; };
 		47AF952621F9E78E006A112B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47AF952421F9E78E006A112B /* Main.storyboard */; };
 		47AF952821F9E791006A112B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47AF952721F9E791006A112B /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 		479C310C220B542B00273EB1 /* UIViewController+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Constants.swift"; sourceTree = "<group>"; };
 		479C310E220C763F00273EB1 /* UnderlinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedTextField.swift; sourceTree = "<group>"; };
 		479C3110220C792700273EB1 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		479C3112220C7DD600273EB1 /* StudentAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentAnnotation.swift; sourceTree = "<group>"; };
 		47AF951D21F9E78E006A112B /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47AF952021F9E78E006A112B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47AF952521F9E78E006A112B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			children = (
 				47B9910C2200BCFC00761C86 /* LocationsMapViewController.swift */,
 				47B99114220352CC00761C86 /* AnnotationLinkTapRecognizer.swift */,
+				479C3112220C7DD600273EB1 /* StudentAnnotation.swift */,
 			);
 			path = LocationsMapViewController;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				47B9910321FFA84E00761C86 /* ParseAPIClientProtocol.swift in Sources */,
 				479C310D220B542B00273EB1 /* UIViewController+Constants.swift in Sources */,
 				47AF953821FA14EA006A112B /* LoginViewController.swift in Sources */,
+				479C3113220C7DD600273EB1 /* StudentAnnotation.swift in Sources */,
 				47B9910B2200B3E100761C86 /* LocationsTabBarController.swift in Sources */,
 				479C310F220C763F00273EB1 /* UnderlinedTextField.swift in Sources */,
 				47AF952121F9E78E006A112B /* AppDelegate.swift in Sources */,
