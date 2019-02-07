@@ -173,17 +173,19 @@ class LoginViewController: UIViewController {
             return
         }
 
-        let buttonY = (view.convert(loginButton.frame, from: contentStackView).origin.y + loginButton.frame.height)
-        var bottomVariation = buttonY - keyboardY
-
         // Update the scrollview to adjust the text field with the keyboard.
-        let bottomInset = scrollView.contentInset.bottom
-        if bottomInset > 0 {
-            bottomVariation += bottomInset
-        }
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let buttonToKeyboardMargin: CGFloat = 10
+        let buttonY = view.convert(loginButton.frame, from: loginButton.superview!).origin.y +
+            loginButton.frame.size.height + statusBarHeight + buttonToKeyboardMargin
+        let bottomVariation = buttonY - keyboardY
+
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomVariation, right: 0)
         // Scroll to the end of the content view.
-        scrollView.scrollRectToVisible(CGRect(x: 0, y: contentView.frame.height, width: 1, height: 1), animated: true)
+        scrollView.scrollRectToVisible(
+            CGRect(x: 0, y: contentView.frame.height, width: 1, height: 1),
+            animated: true
+        )
         scrollView.isScrollEnabled = false
     }
 
