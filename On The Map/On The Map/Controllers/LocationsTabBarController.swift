@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 /// The tab bar controller displaying the map and table view controllers.
 class LocationsTabBarController: UITabBarController {
@@ -28,6 +29,9 @@ class LocationsTabBarController: UITabBarController {
     /// The student information of the currently logged user.
     var loggedUserStudentInformation: StudentInformation?
 
+    /// The location manager used to access the user location, if allowed.
+    var locationManager: CLLocationManager!
+
     // MARK: Imperatives
 
     deinit {
@@ -41,6 +45,8 @@ class LocationsTabBarController: UITabBarController {
         precondition(udacityClient != nil)
         precondition(parseClient != nil)
         precondition(loggedUser != nil)
+
+        locationManager = CLLocationManager()
 
         guard let mapsViewController = viewControllers!.first as? LocationsMapViewController,
             let tableViewController = viewControllers!.last as? LocationsTableViewController else {
@@ -60,7 +66,13 @@ class LocationsTabBarController: UITabBarController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         loadLocations()
+
+        /// Request authorization to access the location in order to show the user in the map.
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
     }
 
     // MARK: Navigation

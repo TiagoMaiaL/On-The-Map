@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 /// The controller displaying the students' locations in the map view.
 class LocationsMapViewController: UIViewController {
@@ -80,23 +81,25 @@ extension LocationsMapViewController: MKMapViewDelegate {
     // MARK: MKMapView delegate methods
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard let studentAnnotation = annotation as? StudentAnnotation else {
+            return nil
+        }
+
         var annotationView: MKPinAnnotationView! = mapView.dequeueReusableAnnotationView(
             withIdentifier: annotationViewReuseIdentifier
         ) as? MKPinAnnotationView
 
         if annotationView == nil {
             annotationView = MKPinAnnotationView(
-                annotation: annotation,
+                annotation: studentAnnotation,
                 reuseIdentifier: annotationViewReuseIdentifier
             )
         }
 
-        if let studentAnnotation = annotation as? StudentAnnotation {
-            if studentAnnotation.studentInformation.key == loggedUser.key {
-                annotationView.pinTintColor = Colors.UserLocationMarkerColor
-            } else {
-                annotationView.pinTintColor = .red
-            }
+        if studentAnnotation.studentInformation.key == loggedUser.key {
+            annotationView.pinTintColor = Colors.UserLocationMarkerColor
+        } else {
+            annotationView.pinTintColor = .red
         }
 
         annotationView.canShowCallout = true
@@ -106,9 +109,12 @@ extension LocationsMapViewController: MKMapViewDelegate {
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let annotation = view.annotation as? StudentAnnotation,
-         let link = annotation.subtitle else {
-            assertionFailure("The annotation must be of the student annotation type and also have a valid link.")
+        guard let studentAnnotation = view.annotation as? StudentAnnotation else {
+            return
+        }
+
+        guard let link = studentAnnotation.subtitle else {
+            assertionFailure("The annotation must have a valid link.")
             return
         }
 
