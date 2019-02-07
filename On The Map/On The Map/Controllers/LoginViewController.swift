@@ -11,8 +11,6 @@ import UIKit
 /// Controller in charge of handling the login process.
 class LoginViewController: UIViewController {
 
-    // TODO: Adjust the position of the text fields when the keyboard is shown.
-
     // MARK: Properties
 
     /// The Udacity api client used to log the user in and get its details.

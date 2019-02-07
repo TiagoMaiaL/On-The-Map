@@ -31,7 +31,6 @@ class StudentAnnotation: NSObject, MKAnnotation {
         self.coordinate = coordinate
         self.studentInformation = studentInformation
 
-        // TODO: Why does the init have to be called after?
         super.init()
 
         self.title = title

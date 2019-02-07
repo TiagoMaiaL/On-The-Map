@@ -55,8 +55,7 @@ class APIClient {
     /// - Parameters:
     ///     - path: The path of the api to be used.
     ///     - parameters: The parameters to be sent with the request.
-    // TODO: Inform each parameter of the completion handler.
-    ///     - completionHandler: The completion handler called when the task
+    ///     - handler: The completion handler called when the task
     ///                          finishes loading or there's an error.
     /// - Returns: The configured and resumed data task associated with the passed arguments.
     func getConfiguredTaskForGET(
