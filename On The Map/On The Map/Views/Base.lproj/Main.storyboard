@@ -214,30 +214,40 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="lQ0-2b-wgk">
-                                <rect key="frame" x="56.5" y="273.5" width="262.5" height="120"/>
+                                <rect key="frame" x="28" y="258.5" width="319" height="150"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qMa-VA-win">
-                                        <rect key="frame" x="0.0" y="0.0" width="262.5" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qMa-VA-win" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="319" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="vrN-hb-H1V"/>
+                                        </constraints>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next" textContentType="location"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Link" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lZ9-Wp-V25">
-                                        <rect key="frame" x="0.0" y="45" width="262.5" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Link" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lZ9-Wp-V25" customClass="UnderlinedTextField" customModule="On_The_Map" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55" width="319" height="40"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="done" textContentType="url"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4h-KD-XnV">
-                                        <rect key="frame" x="85" y="90" width="92" height="30"/>
-                                        <state key="normal" title="Find Location"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4h-KD-XnV" customClass="RoundedButton" customModule="On_The_Map" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="110" width="319" height="40"/>
+                                        <color key="backgroundColor" red="0.4516992364437013" green="0.78008952254641906" blue="0.43305881131752993" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Find Location">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="findLocationOnMap:" destination="vNF-w7-dsG" eventType="touchUpInside" id="6ai-5R-K4C"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="lZ9-Wp-V25" firstAttribute="height" secondItem="qMa-VA-win" secondAttribute="height" id="MsQ-kh-fAH"/>
+                                    <constraint firstItem="T4h-KD-XnV" firstAttribute="height" secondItem="lZ9-Wp-V25" secondAttribute="height" id="QtE-bA-M8u"/>
                                     <constraint firstItem="lZ9-Wp-V25" firstAttribute="width" secondItem="qMa-VA-win" secondAttribute="width" id="TXj-xc-FaX"/>
+                                    <constraint firstItem="T4h-KD-XnV" firstAttribute="width" secondItem="lZ9-Wp-V25" secondAttribute="width" id="ern-4f-1nA"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -245,7 +255,7 @@
                         <constraints>
                             <constraint firstItem="lQ0-2b-wgk" firstAttribute="centerX" secondItem="eOk-PP-aku" secondAttribute="centerX" id="8AA-RZ-P3Z"/>
                             <constraint firstItem="lQ0-2b-wgk" firstAttribute="centerY" secondItem="eOk-PP-aku" secondAttribute="centerY" id="L1b-px-7mA"/>
-                            <constraint firstItem="qMa-VA-win" firstAttribute="width" secondItem="eOk-PP-aku" secondAttribute="width" multiplier="0.7" id="umG-1j-Jaj"/>
+                            <constraint firstItem="qMa-VA-win" firstAttribute="width" secondItem="eOk-PP-aku" secondAttribute="width" multiplier="0.85" id="umG-1j-Jaj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cTD-BQ-ghO"/>
                     </view>
@@ -271,9 +281,16 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="4Jl-eb-Agu">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LzC-qy-kCZ">
-                                <rect key="frame" x="56.5" y="617" width="262.5" height="30"/>
-                                <state key="normal" title="FINISH"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LzC-qy-kCZ" customClass="RoundedButton" customModule="On_The_Map" customModuleProvider="target">
+                                <rect key="frame" x="56.5" y="607" width="262.5" height="40"/>
+                                <color key="backgroundColor" red="0.45169923639999998" green="0.78008952249999997" blue="0.43305881130000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="hXs-Ds-QNU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="FINISH">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="createOrUpdateLocation:" destination="cy0-mq-LtN" eventType="touchUpInside" id="kYC-UX-Vyj"/>
                                 </connections>
