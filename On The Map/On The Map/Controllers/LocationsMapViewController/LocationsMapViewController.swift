@@ -18,14 +18,8 @@ class LocationsMapViewController: UIViewController {
     /// The reuse identifier of the annotation views used on the map.
     let annotationViewReuseIdentifier = "annotation view ID"
 
-    /// The students' locations to be displayed on the map.
-    var locations: [StudentInformation]? {
-        didSet {
-            if let locations = locations {
-                displayLocations(locations)
-            }
-        }
-    }
+    /// The parse client used to retrieve the students locations.
+    var parseClient: ParseAPIClientProtocol!
 
     /// The currently logged user.
     var loggedUser: User!
@@ -38,6 +32,7 @@ class LocationsMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        precondition(parseClient != nil)
         precondition(loggedUser != nil)
 
         mapView.delegate = self
@@ -48,11 +43,9 @@ class LocationsMapViewController: UIViewController {
     // MARK: Imperatives
 
     /// Displays the locations on the map.
-    /// - Parameters:
-    ///     - locations: the locations to be displayed on the map.
-    private func displayLocations(_ locations: [StudentInformation]) {
+    func displayLocations() {
         mapView.removeAnnotations(mapView.annotations)
-        mapView.addAnnotations(locations.compactMap {
+        mapView.addAnnotations(parseClient.studentLocations.compactMap {
             StudentAnnotation(
                 coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude),
                 title: "\($0.firstName) \($0.lastName)",

@@ -54,7 +54,9 @@ class LocationsTabBarController: UITabBarController {
         }
 
         mapsViewController.loggedUser = loggedUser
+        mapsViewController.parseClient = parseClient
         tableViewController.loggedUser = loggedUser
+        tableViewController.parseClient = parseClient
 
         delegate = self
 
@@ -220,8 +222,8 @@ There was an error while downloading the students' locations, please, contact th
                 return
         }
 
-        mapController.locations = locations
-        tableViewController.locations = locations
+        tableViewController.displayLocations()
+        mapController.displayLocations()
     }
 }
 

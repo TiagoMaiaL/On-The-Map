@@ -16,14 +16,8 @@ class LocationsTableViewController: UITableViewController {
     /// The location cell identifier used in this controller.
     private let locationCellIdentifier = "locationCell"
 
-    /// The locations to be displayed.
-    var locations: [StudentInformation]? {
-        didSet {
-            if locations != nil {
-                self.tableView?.reloadData()
-            }
-        }
-    }
+    /// The parse client in charge of retrieving the students locations.
+    var parseClient: ParseAPIClientProtocol!
 
     /// The currently logged user.
     var loggedUser: User!
@@ -33,7 +27,15 @@ class LocationsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        precondition(parseClient != nil)
         precondition(loggedUser != nil)
+    }
+
+    // MARK: Imperatives
+
+    /// Displays the locations in the table view.
+    func displayLocations() {
+        tableView.reloadData()
     }
 
     // MARK: Table view data source methods
@@ -43,16 +45,13 @@ class LocationsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations?.count ?? 0
+        return parseClient.studentLocations.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: locationCellIdentifier, for: indexPath)
 
-        guard let currentLocation = locations?[indexPath.row] else {
-            assertionFailure("The location must be successfully retrieved.")
-            return cell
-        }
+        let currentLocation = parseClient.studentLocations[indexPath.row]
 
         if currentLocation.key == loggedUser.key {
             cell.backgroundColor = Colors.UserLocationCellColor
@@ -69,11 +68,7 @@ class LocationsTableViewController: UITableViewController {
     // MARK: Table view delegate methods
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let currentLocation = locations?[indexPath.row] else {
-            assertionFailure("The locations must be set in order to receive row touches.")
-            return
-        }
-
+        let currentLocation = parseClient.studentLocations[indexPath.row]
         UIApplication.shared.openDefaultBrowser(accessingAddress: currentLocation.mediaUrl.absoluteString)
     }
 }
