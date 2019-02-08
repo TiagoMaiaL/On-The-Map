@@ -200,7 +200,7 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
     }
 
     func sortLocations() {
-        self.studentLocations = self.studentLocations.sorted {
+        studentLocations = studentLocations.sorted {
             $0.updatedAt!.compare($1.updatedAt!) == .orderedDescending
         }
     }

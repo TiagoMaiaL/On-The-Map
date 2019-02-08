@@ -110,7 +110,7 @@ class LoginViewController: UIViewController {
 
     /// Enables or disables the views to display the loading state.
     private func enableViews(_ isEnabled: Bool) {
-        let views = [self.usernameTextField, self.passwordTextField, self.loginButton]
+        let views = [usernameTextField, passwordTextField, loginButton]
         views.forEach {
             $0?.resignFirstResponder()
             $0?.isEnabled = isEnabled

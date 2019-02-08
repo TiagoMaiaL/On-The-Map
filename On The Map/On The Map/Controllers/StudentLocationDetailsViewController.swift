@@ -101,14 +101,12 @@ class StudentLocationDetailsViewController: UIViewController {
     @IBAction func createOrUpdateLocation(_ sender: UIButton) {
         let completionHandler: (StudentInformation?, APIClient.RequestError?) -> Void = { information, error in
             guard error == nil, let information = information else {
-                DispatchQueue.main.async {
-                    self.displayError(
-                        error!,
-                        withMessage: """
+                self.displayError(
+                    error!,
+                    withMessage: """
 There was an error while sending the student information to the server, please, try again.
 """
-                    )
-                }
+                )
                 return
             }
 
@@ -188,11 +186,11 @@ extension StudentLocationDetailsViewController: MKMapViewDelegate {
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        self.selectedViewTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openDefaultBrowser(_:)))
-        view.addGestureRecognizer(self.selectedViewTapRecognizer!)
+        selectedViewTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openDefaultBrowser(_:)))
+        view.addGestureRecognizer(selectedViewTapRecognizer!)
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        view.removeGestureRecognizer(self.selectedViewTapRecognizer!)
+        view.removeGestureRecognizer(selectedViewTapRecognizer!)
     }
 }

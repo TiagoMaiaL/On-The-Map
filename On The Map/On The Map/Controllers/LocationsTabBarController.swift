@@ -114,8 +114,8 @@ There was an error while downloading the students' locations, please, contact th
 """
 
             guard let locations = locations, error == nil else {
+                self.displayError(error ?? .malformedJson, withMessage: errorMessage)
                 DispatchQueue.main.async {
-                    self.displayError(error ?? .malformedJson, withMessage: errorMessage)
                     sender?.isEnabled = true
                 }
                 return
@@ -150,11 +150,8 @@ There was an error while downloading the students' locations, please, contact th
         sender.isEnabled = false
         udacityClient.logOut { isSuccessful, error in
             guard isSuccessful, error == nil else {
+                self.displayError(error!, withMessage: "There was an error while logging out. Please, try again later.")
                 DispatchQueue.main.async {
-                    self.displayError(
-                        error!,
-                        withMessage: "There was an error while logging out. Please, try again later. "
-                    )
                     sender.isEnabled = true
                 }
                 return
@@ -192,8 +189,8 @@ There was an error while downloading the students' locations, please, contact th
     /// Updates the handled controllers to display the passed student locations.
     /// - Parameter locations: the fetched student locations.
     private func displayStudentLocations(_ locations: [StudentInformation]) {
-        guard let mapController = self.viewControllers?.first as? LocationsMapViewController,
-            let tableViewController = self.viewControllers?.last as? LocationsTableViewController else {
+        guard let mapController = viewControllers?.first as? LocationsMapViewController,
+            let tableViewController = viewControllers?.last as? LocationsTableViewController else {
                 assertionFailure("Couldn't get the controllers.")
                 return
         }
