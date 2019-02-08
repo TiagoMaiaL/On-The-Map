@@ -37,6 +37,9 @@ struct StudentInformation: Hashable {
     /// The parse id of the object.
     var objectID: String?
 
+    /// The data in which the information was last updated.
+    var updatedAt: Date?
+
     // MARK: Initializers
 
     init(firstName: String,
@@ -90,6 +93,11 @@ struct StudentInformation: Hashable {
             return nil
         }
 
+        guard let updatedAtText = informationData[ParseAPIClient.JSONResponseKeys.UpdatedAt] as? String,
+            let updatedAt = DateFormatter.APIFormatter.date(from: updatedAtText) else {
+                return nil
+        }
+
         self.firstName = firstName
         self.lastName = lastName
         self.latitude = latitude
@@ -98,5 +106,6 @@ struct StudentInformation: Hashable {
         self.mediaUrl = mediaUrl
         self.key = key
         self.objectID = objectID
+        self.updatedAt = updatedAt
     }
 }

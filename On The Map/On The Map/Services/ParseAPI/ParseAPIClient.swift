@@ -13,7 +13,8 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
 
     // MARK: Properties
 
-    var studentLocations: [StudentInformation]?
+    /// The latest fetched student locations.
+    var studentLocations = [StudentInformation]()
 
     /// The base url for making requests to the Parse API.
     private lazy var baseURL: URL = {
@@ -62,6 +63,7 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
             assert(!locations.isEmpty, "The mapped locations mustn't be empty.")
 
             self.studentLocations = locations
+            self.sortLocations()
             handler(locations, nil)
         }
     }
@@ -127,9 +129,36 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
         }
 
         let requestCompletionHandler: (DeserializedJson?, APIClient.RequestError?) -> Void = { json, error in
-            guard error == nil, json != nil else {
+            guard error == nil, let json = json else {
                 handler(nil, error!)
                 return
+            }
+
+            var information = information
+
+            switch method {
+            case .post:
+                guard let objectID = json[JSONResponseKeys.ObjectID] as? String else {
+                    handler(nil, .malformedJson)
+                    return
+                }
+                guard let updatedAtText = json[JSONResponseKeys.CreatedAt] as? String,
+                    let updatedAt = DateFormatter.APIFormatter.date(from: updatedAtText) else {
+                        handler(nil, .malformedJson)
+                        return
+                }
+
+                information.objectID = objectID
+                information.updatedAt = updatedAt
+            case .put:
+                guard let updatedAtText = json[JSONResponseKeys.UpdatedAt] as? String,
+                    let updatedAt = DateFormatter.APIFormatter.date(from: updatedAtText) else {
+                        handler(nil, .malformedJson)
+                        return
+                }
+
+                information.updatedAt = updatedAt
+            default: break
             }
 
             handler(information, nil)
@@ -168,5 +197,11 @@ class ParseAPIClient: APIClient, ParseAPIClientProtocol {
             JSONResponseKeys.InformationKey: studentInformation.key
         ]
         return try? JSONSerialization.data(withJSONObject: jsonDictionary, options: .prettyPrinted)
+    }
+
+    func sortLocations() {
+        self.studentLocations = self.studentLocations.sorted {
+            $0.updatedAt!.compare($1.updatedAt!) == .orderedDescending
+        }
     }
 }

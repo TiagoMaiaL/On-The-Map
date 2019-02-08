@@ -120,9 +120,10 @@ class StudentLocationDetailsViewController: UIViewController {
         }
 
         // Update or create the informed location values.
-        (loggedUserStudentInformation != nil ?
-            parseClient.updateStudentLocation :
-            parseClient.createStudentLocation)(studentInformationToPost, completionHandler)
+        (loggedUserStudentInformation != nil ? parseClient.updateStudentLocation : parseClient.createStudentLocation)(
+            studentInformationToPost,
+            completionHandler
+        )
     }
 
     /// Called when the details view of the annotation view is tapped. This opens the browser with the specified link.

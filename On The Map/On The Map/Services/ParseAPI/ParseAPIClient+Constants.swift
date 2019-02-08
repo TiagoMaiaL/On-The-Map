@@ -40,6 +40,8 @@ extension ParseAPIClient {
         static let MediaUrl = "mediaURL"
         static let InformationKey = "uniqueKey"
         static let ObjectID = "objectId"
+        static let UpdatedAt = "updatedAt"
+        static let CreatedAt = "createdAt"
     }
 
     /// The keys of the user info that comes with the notifications sent in the notification center.

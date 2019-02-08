@@ -111,7 +111,7 @@ class LocationsTabBarController: UITabBarController {
 There was an error while downloading the students' locations, please, contact the app developer.
 """
 
-            guard var locations = locations, error == nil else {
+            guard let locations = locations, error == nil else {
                 DispatchQueue.main.async {
                     self.displayError(error ?? .malformedJson, withMessage: errorMessage)
                     sender?.isEnabled = true
@@ -119,27 +119,26 @@ There was an error while downloading the students' locations, please, contact th
                 return
             }
 
-            if let loggedUserInformation = self.loggedUserStudentInformation ??
-                locations.filter({ $0.key == self.loggedUser.key }).first {
-                // Try to search for the logged user's location, if one wasn't already set.
-                if let index = locations.firstIndex(of: loggedUserInformation) {
-                    locations.insert(locations.remove(at: index), at: 0)
-                } else {
-                    locations.insert(loggedUserInformation, at: 0)
-                }
-
-                self.loggedUserStudentInformation = loggedUserInformation
-                showFetchedLocationsOnMainThread(locations)
-            } else {
-                // Otherwise, try to fetch it, and if successful, display it.
-                _ = self.parseClient.fetchStudentLocation(byUsingUniqueKey: self.loggedUser.key) { information, _ in
-                    if information != nil {
-                        self.loggedUserStudentInformation = information
-                        locations.insert(information!, at: 0)
-                    }
-
+            if self.loggedUserStudentInformation == nil {
+                // Search for the student information of the logged user.Z
+                if let loggedUserInformation = locations.filter({ $0.key == self.loggedUser.key }).first {
+                    self.loggedUserStudentInformation = loggedUserInformation
                     showFetchedLocationsOnMainThread(locations)
+                } else {
+                    // Otherwise, try to fetch it, and if successful, display it.
+                    _ = self.parseClient.fetchStudentLocation(byUsingUniqueKey: self.loggedUser.key) { information, _ in
+                        if let information = information {
+                            // Include the fetched information into the other locations and sort them.
+                            self.loggedUserStudentInformation = information
+                            self.parseClient.studentLocations.append(information)
+                            self.parseClient.sortLocations()
+                        }
+
+                        showFetchedLocationsOnMainThread(self.parseClient.studentLocations)
+                    }
                 }
+            } else {
+                showFetchedLocationsOnMainThread(locations)
             }
         }
     }
@@ -195,10 +194,6 @@ There was an error while downloading the students' locations, please, contact th
     /// Receives the created student location and updates the map and table views with it.
     /// - Parameter notification: the sent notification.
     @objc private func displayCreatedLocation(usingNotification notification: NSNotification) {
-        guard let mapsController = viewControllers?.first as? LocationsMapViewController else {
-            preconditionFailure("Couldn't get the map view controller.")
-        }
-
         guard let createdInformation =
             notification.userInfo?[ParseAPIClient.UserInfoKeys.CreatedStudentInformation] as? StudentInformation else {
                 preconditionFailure("Coulnd't get the created student information from the notification.")
@@ -206,14 +201,14 @@ There was an error while downloading the students' locations, please, contact th
 
         self.loggedUserStudentInformation = createdInformation
 
-        var locations = mapsController.locations ?? []
-
         // Check if the location already exists. If so, remove it.
-        locations.removeAll {
+        parseClient.studentLocations.removeAll {
             $0.key == createdInformation.key && $0.objectID == createdInformation.objectID
         }
-        locations.insert(createdInformation, at: 0)
-        displayStudentLocations(locations)
+        parseClient.studentLocations.append(createdInformation)
+        parseClient.sortLocations()
+
+        displayStudentLocations(parseClient.studentLocations)
     }
 
     /// Updates the handled controllers to display the passed student locations.

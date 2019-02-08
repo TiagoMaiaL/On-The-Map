@@ -314,3 +314,14 @@ extension String {
         return replacingOccurrences(of: "{\(key)}", with: value)
     }
 }
+
+extension DateFormatter {
+    static let APIFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SZ"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        return formatter
+    }()
+}

@@ -14,7 +14,7 @@ protocol ParseAPIClientProtocol {
     // MARK: Properties
 
     /// The student locations fetched by the API client.
-    var studentLocations: [StudentInformation]? { get }
+    var studentLocations: [StudentInformation] { get set }
 
     // MARK: Methods
 
@@ -56,4 +56,7 @@ protocol ParseAPIClientProtocol {
         _ information: StudentInformation,
         withCompletionHandler handler: @escaping (StudentInformation?, APIClient.RequestError?) -> Void
     )
+
+    /// Sorts the locations by the updated at property.
+    func sortLocations()
 }
