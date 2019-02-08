@@ -83,48 +83,23 @@ class LoginViewController: UIViewController {
         // Disable views to show loading.
         enableViews(false)
 
-        func displayError(_ error: APIClient.RequestError) {
-            DispatchQueue.main.async {
-                // Re-enable views when error happens.
-                self.enableViews(true)
-
-                let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
-                    alert.dismiss(animated: true, completion: nil)
-                })
-
-                var alertMessage: String?
-
-                switch error {
-                case .connection:
-                    alertMessage = "There's a problem with your internet connection, please, fix it and try again."
-                case .response(_):
-                    alertMessage = "The username or password you provided isn't correct."
-                    self.passwordTextField.text = ""
-                default:
-                    break
-                }
-
-                alert.message = alertMessage
-                self.present(alert, animated: true)
-            }
-        }
-
         udacityAPIClient.logIn(withUsername: username, password: password) { account, session, error in
             guard error == nil else {
-                displayError(error!)
+                self.enableViews(true)
+                self.displayError(error!, withMessage: "The username or password provided isn't correct.")
                 return
             }
 
             self.udacityAPIClient.getUserInfo(usingUserIdentifier: account!.key) { user, error in
+                self.enableViews(true)
+
                 guard error == nil else {
-                    displayError(error!)
+                    self.displayError(error!, withMessage: "Couldn't get the user details. Plase, try again later.")
                     return
                 }
 
                 DispatchQueue.main.async {
                     // Re-enable views when request finishes.
-                    self.enableViews(true)
                     self.performSegue(withIdentifier: SegueIdentifiers.TabBarController, sender: self)
                 }
             }
@@ -239,5 +214,32 @@ extension UIViewController {
     /// Unsubscribes from all notifications in the notification center.
     func unsubscribeFromAllNotifications() {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    // MARK: Error handling helper methods
+
+    /// Displays an error message to the user.
+    /// - Parameters:
+    ///     - error: the error.
+    ///     - message: the massage to be displayed.
+    func displayError(_ error: APIClient.RequestError, withMessage message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default))
+
+            var alertMessage: String?
+
+            switch error {
+            case .connection:
+                alertMessage = "There's a problem with your internet connection, please, fix it and try again."
+            case .response(_):
+                alertMessage = message
+            default:
+                break
+            }
+
+            alert.message = alertMessage
+            self.present(alert, animated: true)
+        }
     }
 }

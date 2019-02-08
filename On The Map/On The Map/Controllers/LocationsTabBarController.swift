@@ -167,30 +167,6 @@ There was an error while downloading the students' locations, please, contact th
         }
     }
 
-    // MARK: Imperatives
-
-    /// Displays an error alert to the user.
-    /// - Parameters:
-    ///     - error: The error to be displayed to the user.
-    private func displayError(_ error: APIClient.RequestError, withMessage message: String) {
-        let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
-            alert.dismiss(animated: true, completion: nil)
-        })
-
-        var alertMessage: String?
-
-        switch error {
-        case .connection:
-            alertMessage = "There's a problem with your internet connection, please, fix it and try again."
-        default:
-            alertMessage = message
-        }
-
-        alert.message = alertMessage
-        present(alert, animated: true)
-    }
-
     // MARK: Notifications
 
     /// Receives the created student location and updates the map and table views with it.
@@ -201,7 +177,7 @@ There was an error while downloading the students' locations, please, contact th
                 preconditionFailure("Coulnd't get the created student information from the notification.")
         }
 
-        self.loggedUserStudentInformation = createdInformation
+        loggedUserStudentInformation = createdInformation
 
         // Check if the location already exists. If so, remove it.
         parseClient.studentLocations.removeAll {

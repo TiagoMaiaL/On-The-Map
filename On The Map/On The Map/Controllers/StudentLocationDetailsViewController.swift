@@ -103,7 +103,10 @@ class StudentLocationDetailsViewController: UIViewController {
             guard error == nil, let information = information else {
                 DispatchQueue.main.async {
                     self.displayError(
-                        "There was an error while sending the student information to the server, please, try again."
+                        error!,
+                        withMessage: """
+There was an error while sending the student information to the server, please, try again.
+"""
                     )
                 }
                 return
@@ -160,17 +163,6 @@ class StudentLocationDetailsViewController: UIViewController {
             mediaUrl: URL(string: urlString)!,
             key: loggedUser.key
         )
-    }
-
-    /// Displays the an error to the user.
-    /// - Parameter error: the error
-    private func displayError(_ errorMessage: String) {
-        let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
-            alert.dismiss(animated: true)
-        }))
-
-        present(alert, animated: true)
     }
 }
 
