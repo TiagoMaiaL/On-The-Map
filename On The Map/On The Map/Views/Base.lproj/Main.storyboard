@@ -257,10 +257,16 @@
                                     <constraint firstItem="T4h-KD-XnV" firstAttribute="width" secondItem="lZ9-Wp-V25" secondAttribute="width" id="ern-4f-1nA"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qG9-kD-FUw">
+                                <rect key="frame" x="169" y="379" width="37" height="37"/>
+                                <color key="color" red="0.45169923639999998" green="0.78008952249999997" blue="0.43305881130000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="lQ0-2b-wgk" firstAttribute="centerX" secondItem="eOk-PP-aku" secondAttribute="centerX" id="8AA-RZ-P3Z"/>
+                            <constraint firstItem="qG9-kD-FUw" firstAttribute="centerX" secondItem="eOk-PP-aku" secondAttribute="centerX" id="Djo-jb-Cvc"/>
+                            <constraint firstItem="qG9-kD-FUw" firstAttribute="top" secondItem="T4h-KD-XnV" secondAttribute="bottom" constant="30" id="FvJ-EI-pmz"/>
                             <constraint firstItem="lQ0-2b-wgk" firstAttribute="top" secondItem="cTD-BQ-ghO" secondAttribute="top" constant="20" id="gvf-eN-mQh"/>
                             <constraint firstItem="qMa-VA-win" firstAttribute="width" secondItem="eOk-PP-aku" secondAttribute="width" multiplier="0.85" id="umG-1j-Jaj"/>
                         </constraints>
@@ -268,6 +274,7 @@
                     </view>
                     <connections>
                         <outlet property="findLocationButton" destination="T4h-KD-XnV" id="M74-kl-Clq"/>
+                        <outlet property="geocodeActivityIndicator" destination="qG9-kD-FUw" id="Rtg-SF-fAv"/>
                         <outlet property="linkTextField" destination="lZ9-Wp-V25" id="bTu-JI-0cl"/>
                         <outlet property="locationTextField" destination="qMa-VA-win" id="5wm-h8-aIO"/>
                         <segue destination="cy0-mq-LtN" kind="show" identifier="show annotation on the map" id="YBh-ha-kow"/>

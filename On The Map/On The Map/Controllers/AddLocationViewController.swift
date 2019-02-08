@@ -26,6 +26,9 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     /// The button used to find the user location.
     @IBOutlet weak var findLocationButton: UIButton!
 
+    /// The activity indicator shown when the geocoding request takes place.
+    @IBOutlet weak var geocodeActivityIndicator: UIActivityIndicatorView!
+
     /// The currently logged in user.
     var loggedUser: User!
 
@@ -100,11 +103,12 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
 
         findLocationButton.isEnabled = false
+        geocodeActivityIndicator.startAnimating()
+        [locationTextField, linkTextField].forEach { $0?.resignFirstResponder() }
 
         let localSearch = MKLocalSearch(request: mapSearchRequest)
         localSearch.start { response, error in
-            sender?.isEnabled = true
-
+            self.geocodeActivityIndicator.stopAnimating()
             self.findLocationButton.isEnabled = true
 
             guard error == nil, let response = response, !response.mapItems.isEmpty else {
